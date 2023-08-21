@@ -3,6 +3,14 @@
     "title": "Sellfinity",
     "description": "Ventas al inifito"
   },
+  "SignInPage": {
+    "title": "Iniciar sesión",
+    "description": "Iniciar sesión"
+  },
+  "SignUpPage": {
+    "title": "Crear una cuenta",
+    "description": "Crea una cuenta"
+  },
   "LandingPage": {
     "title": "Inicio (sin proteger)",
     "callToAction": "Iniciar"
@@ -10,6 +18,11 @@
   "DashboardPage": {
     "title": "Vista general",
     "subtitle": "Mira tus estadísticas"
+  },
+  "BillboardsPage": {
+    "title": "Carteleras",
+    "description": "Administra las carteleras de tu tienda",
+    "addBtn": "Agregar"
   },
   "Navbar": {
     "toggleTheme": "Cambiar tema",

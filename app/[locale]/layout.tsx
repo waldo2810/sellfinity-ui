@@ -1,7 +1,6 @@
 import Providers from '@/providers/providers'
-import { ToastProvider } from '@/providers/toast-provider'
 import { ClerkProvider } from '@clerk/nextjs'
-import { createTranslator, NextIntlClientProvider } from 'next-intl'
+import { createTranslator, useLocale } from 'next-intl'
 import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { ReactNode } from 'react'
@@ -21,28 +20,29 @@ async function getMessages(locale: string) {
   }
 }
 
-export async function generateStaticParams() {
-  return ['en', 'es'].map(locale => ({ locale }))
-}
-
 export async function generateMetadata({ params: { locale } }: Props) {
   const messages = await getMessages(locale)
-
-  // You can use the core (non-React) APIs when you have to use next-intl
-  // outside of components. Potentially this will be simplified in the future
-  // (see https://next-intl-docs.vercel.app/docs/next-13/server-components).
   const t = createTranslator({ locale, messages })
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : 'http://localhost:3000'
 
   return {
-    title: t('LocaleLayout.title'),
+    metadataBase: new URL(baseUrl),
+    title: {
+      default: t('LocaleLayout.title')!,
+      template: `%s | ${t('LocaleLayout.title')}`
+    },
+    robots: {
+      follow: true,
+      index: true
+    },
     description: t('LocaleLayout.description')
   }
 }
 
-export default async function LocaleLayout({
-  children,
-  params: { locale }
-}: Props) {
+export default async function LocaleLayout({ children, params }: Props) {
+  const locale = useLocale()
   const messages = await getMessages(locale)
 
   return (

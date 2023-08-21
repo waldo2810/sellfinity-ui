@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import {
-  Code,
-  ImageIcon,
+  Box,
   LayoutDashboard,
-  MessageSquare,
-  Music,
-  Settings,
-  VideoIcon
+  Megaphone,
+  Palette,
+  Receipt,
+  Ruler,
+  Tag
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
@@ -23,39 +23,39 @@ const routes = [
     color: 'text-sky-500'
   },
   {
-    label: 'Conversation',
-    icon: MessageSquare,
-    href: '/conversation',
+    label: 'Orders',
+    icon: Receipt,
+    href: '/orders',
     color: 'text-violet-500'
   },
   {
-    label: 'Image Generation',
-    icon: ImageIcon,
+    label: 'Products',
+    icon: Box,
     color: 'text-pink-700',
-    href: '/image'
+    href: '/products'
   },
   {
-    label: 'Video Generation',
-    icon: VideoIcon,
-    color: 'text-orange-700',
-    href: '/video'
-  },
-  {
-    label: 'Music Generation',
-    icon: Music,
+    label: 'Categories',
+    icon: Tag,
     color: 'text-emerald-500',
-    href: '/music'
+    href: '/categories'
   },
   {
-    label: 'Code Generation',
-    icon: Code,
+    label: 'Billboards',
+    icon: Megaphone,
+    color: 'text-orange-700',
+    href: '/billboards'
+  },
+  {
+    label: 'Colors',
+    icon: Palette,
     color: 'text-green-700',
-    href: '/code'
+    href: '/colors'
   },
   {
-    label: 'Settings',
-    icon: Settings,
-    href: '/settings'
+    label: 'Sizes',
+    icon: Ruler,
+    href: '/sizes'
   }
 ]
 
@@ -63,13 +63,13 @@ export const Sidebar = () => {
   const pathname = usePathname()
 
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
+    <div className="space-y-4 py-4 flex flex-col h-full bg-slate-50 dark:bg-slate-900 text-slate-950 dark:text-slate-50 border border-r-slate-200 dark:border-r-slate-800">
       <div className="px-3 py-2 flex-1">
         <Link href="/dashboard" className="flex items-center pl-3 mb-14">
           <div className="relative h-8 w-8 mr-4">
             <Image fill alt="Logo" src="/logo.png" />
           </div>
-          <h1 className="text-2xl font-bold">Saas AI</h1>
+          <h1 className="text-2xl font-bold">Sellfinity</h1>
         </Link>
         <div className="space-y-1">
           {routes.map(route => (
@@ -77,9 +77,9 @@ export const Sidebar = () => {
               key={route.href}
               href={route.href}
               className={cn(
-                'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition',
+                'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-slate-950 dark:hover:text-slate-50 hover:bg-slate-200 rounded-lg transition',
                 pathname === route.href
-                  ? 'text-white bg-white/10'
+                  ? 'text-slate-950 dark:text-slate-50 bg-slate-200 dark:bg-slate-800'
                   : 'text-zinc-400'
               )}
             >

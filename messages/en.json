@@ -3,6 +3,14 @@
     "title": "Sellfinity",
     "description": "Sales to the infinite"
   },
+  "SignInPage": {
+    "title": "Sign in",
+    "description": "Sign in"
+  },
+  "SignUpPage": {
+    "title": "Create account",
+    "description": "Create an account"
+  },
   "LandingPage": {
     "title": "Your landing (unprotected)",
     "callToAction": "Get started"
@@ -10,6 +18,11 @@
   "DashboardPage": {
     "title": "Overview",
     "subtitle": "Take a look at your stats"
+  },
+  "BillboardsPage": {
+    "title": "Billboards",
+    "description": "Manage billboards in your store",
+    "addBtn": "Add"
   },
   "Navbar": {
     "toggleTheme": "Toggle theme",

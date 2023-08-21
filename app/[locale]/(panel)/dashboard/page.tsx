@@ -1,15 +1,24 @@
 'use client'
 
-import LargeHeading from '@/components/ui/LargeHeading'
-import { Card } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
-import { ArrowRight } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { tools } from './constants'
-import { useTranslations } from 'next-intl'
+import LargeHeading from '@/components/ui/large-heading'
+import { Metadata } from 'next'
+import { createTranslator, useTranslations } from 'next-intl'
+
+export async function generateMetadata({
+  params: { locale }
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  const messages = (await import(`../../../../messages/${locale}.json`)).default
+  const t = createTranslator({ locale, messages })
+
+  return {
+    title: t('DashboadPage.title'),
+    description: t('DashboadPage.description')
+  }
+}
 
 export default function DashboardPage() {
-  const router = useRouter()
   const t = useTranslations('DashboardPage')
   return (
     <div>
@@ -19,23 +28,7 @@ export default function DashboardPage() {
           {t('subtitle')}
         </p>
       </div>
-      <div className="px-4 md:px-20 lg:px-32 space-y-4">
-        {tools.map(tool => (
-          <Card
-            onClick={() => router.push(tool.href)}
-            key={tool.href}
-            className="p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer"
-          >
-            <div className="flex items-center gap-x-4">
-              <div className={cn('p-2 w-fit rounded-md', tool.bgColor)}>
-                <tool.icon className={cn('w-6 h-6', tool.color)} />
-              </div>
-              <div className="font-semibold">{tool.label}</div>
-            </div>
-            <ArrowRight className="w-5 h-5" />
-          </Card>
-        ))}
-      </div>
+      {/* graphs */}
     </div>
   )
 }
