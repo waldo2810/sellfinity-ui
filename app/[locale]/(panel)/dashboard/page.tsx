@@ -6,15 +6,17 @@ import { cn } from '@/lib/utils'
 import { ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { tools } from './constants'
+import { useTranslations } from 'next-intl'
 
 export default function DashboardPage() {
   const router = useRouter()
+  const t = useTranslations('DashboardPage')
   return (
     <div>
       <div className="mb-8 space-y-1">
-        <LargeHeading size="sm">Explore the power of AI</LargeHeading>
+        <LargeHeading size="sm">{t('title')}</LargeHeading>
         <p className="text-muted-foreground text-sm md:text-lg font-light text-center md:text-left">
-          Chat with the smartest AI
+          {t('subtitle')}
         </p>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4">

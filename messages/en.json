@@ -1,0 +1,14 @@
+{
+  "LocaleLayout": {
+    "title": "Sellfinity",
+    "description": "Sales to the infinite"
+  },
+  "LandingPage": {
+    "title": "Your landing (unprotected)",
+    "callToAction": "Get started"
+  },
+  "DashboardPage": {
+    "title": "Explore the power of AI",
+    "subtitle": "Chat with the smartest AI"
+  }
+}

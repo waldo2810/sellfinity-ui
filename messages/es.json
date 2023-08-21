@@ -1,0 +1,14 @@
+{
+  "LocaleLayout": {
+    "title": "Sellfinity",
+    "description": "Ventas al inifito"
+  },
+  "LandingPage": {
+    "title": "Inicio (sin proteger)",
+    "callToAction": "Iniciar"
+  },
+  "DashboardPage": {
+    "title": "Explora el poder de la IA",
+    "subtitle": "Chatea con la IA más inteligente"
+  }
+}
