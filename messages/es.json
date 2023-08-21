@@ -8,7 +8,13 @@
     "callToAction": "Iniciar"
   },
   "DashboardPage": {
-    "title": "Explora el poder de la IA",
-    "subtitle": "Chatea con la IA más inteligente"
+    "title": "Vista general",
+    "subtitle": "Mira tus estadísticas"
+  },
+  "Navbar": {
+    "toggleTheme": "Cambiar tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
   }
 }

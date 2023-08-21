@@ -1,3 +1,4 @@
+import Providers from '@/providers/providers'
 import { ToastProvider } from '@/providers/toast-provider'
 import { ClerkProvider } from '@clerk/nextjs'
 import { createTranslator, NextIntlClientProvider } from 'next-intl'
@@ -48,10 +49,9 @@ export default async function LocaleLayout({
     <ClerkProvider>
       <html lang={locale}>
         <body className={inter.className}>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <ToastProvider />
+          <Providers locale={locale} messages={messages}>
             {children}
-          </NextIntlClientProvider>
+          </Providers>
         </body>
       </html>
     </ClerkProvider>

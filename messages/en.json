@@ -8,7 +8,13 @@
     "callToAction": "Get started"
   },
   "DashboardPage": {
-    "title": "Explore the power of AI",
-    "subtitle": "Chat with the smartest AI"
+    "title": "Overview",
+    "subtitle": "Take a look at your stats"
+  },
+  "Navbar": {
+    "toggleTheme": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   }
 }
