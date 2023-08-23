@@ -22,12 +22,79 @@
   "BillboardsPage": {
     "title": "Billboards",
     "description": "Manage billboards in your store",
-    "addBtn": "Add"
+    "addBtn": "Add",
+    "api": {
+      "description": "API Calls for Billboards"
+    }
   },
   "Navbar": {
     "toggleTheme": "Toggle theme",
     "light": "Light",
     "dark": "Dark",
     "system": "System"
+  },
+  "AlertModal": {
+    "title": "Are you sure?",
+    "description": "This action cannot be undone",
+    "continueBtn": "Continue",
+    "cancelBtn": "Cancel"
+  },
+  "BillboardForm": {
+    "Create": {
+      "title": "Create billboard",
+      "description": "Add a new billboard",
+      "toast": "Billboard created",
+      "action": "Create"
+    },
+    "Edit": {
+      "title": "Edit billboard",
+      "description": "Edit a billboard",
+      "toast": "Billboard updated",
+      "action": "Save changes"
+    },
+    "Label": {
+      "backgroundImage": "Background Image",
+      "label": "Label"
+    },
+    "Placeholder": {
+      "label": "An incredible billboard..."
+    }
+  },
+  "UploadImageComponent": {
+    "uploadBtn": "Upload an image"
+  },
+  "BillboardDataTable": {
+    "placeholder": "Search",
+    "noResults": "No results",
+    "avPag": "Next",
+    "rePag": "Previous",
+    "columns": {
+      "label": {
+        "accesorKey": "label",
+        "header": "Label"
+      }
+    },
+    "actions": {
+      "title": "Actions",
+      "copy": {
+        "title": "Copy ID",
+        "toast": {
+          "success": "ID copied to clipboard"
+        }
+      },
+      "update": "Update",
+      "delete": {
+        "title": "Delete",
+        "toast": {
+          "success": "Billboard deleted",
+          "error": "Make sure you removed all categories using this billboard first."
+        }
+      }
+    }
+  },
+  "ApiAlert": {
+    "toast": {
+      "success": "API Route copied to clipboard"
+    }
   }
 }

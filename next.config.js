@@ -4,5 +4,7 @@ const withNextIntl = require('next-intl/plugin')(
 )
 
 module.exports = withNextIntl({
-  // Other Next.js configuration ...
+  images: {
+    domains: ['res.cloudinary.com', 'cloudinary-res.cloudinary.com']
+  }
 })

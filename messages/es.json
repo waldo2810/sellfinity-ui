@@ -22,12 +22,79 @@
   "BillboardsPage": {
     "title": "Carteleras",
     "description": "Administra las carteleras de tu tienda",
-    "addBtn": "Agregar"
+    "addBtn": "Agregar",
+    "api": {
+      "description": "Endpoints para carteleras"
+    }
   },
   "Navbar": {
     "toggleTheme": "Cambiar tema",
     "light": "Claro",
     "dark": "Oscuro",
     "system": "Sistema"
+  },
+  "AlertModal": {
+    "title": "¿Estás seguro?",
+    "description": "Esta acción no se puede deshacer",
+    "continueBtn": "Continuar",
+    "cancelBtn": "Cancelar"
+  },
+  "BillboardForm": {
+    "Create": {
+      "title": "Crear cartelera",
+      "description": "Agregar una nueva cartelera",
+      "toast": "Cartelera creada",
+      "action": "Crear"
+    },
+    "Edit": {
+      "title": "Editar cartelera",
+      "description": "Editar una cartelera",
+      "toast": "Cartelera actualizada",
+      "action": "Guardar cambios"
+    },
+    "Label": {
+      "backgroundImage": "Imagen de fondo",
+      "label": "Nombre"
+    },
+    "Placeholder": {
+      "label": "Una gran cartelera..."
+    }
+  },
+  "UploadImageComponent": {
+    "uploadBtn": "Subir una imagen"
+  },
+  "BillboardDataTable": {
+    "placeholder": "Buscar",
+    "noResults": "Sin resultados",
+    "avPag": "Siguiente",
+    "rePag": "Anterior",
+    "columns": {
+      "label": {
+        "accesorKey": "label",
+        "header": "Label"
+      }
+    },
+    "actions": {
+      "title": "Acciones",
+      "copy": {
+        "title": "Copiar ID",
+        "toast": {
+          "success": "ID copiado al portapapeles"
+        }
+      },
+      "update": "Editar",
+      "delete": {
+        "title": "Eliminar",
+        "toast": {
+          "success": "Cartelera eliminada",
+          "error": "Debes eliminar todas las categorias usando esta cartelera primero."
+        }
+      }
+    }
+  },
+  "ApiAlert": {
+    "toast": {
+      "success": "Ruta copiada en el portapapeles"
+    }
   }
 }
