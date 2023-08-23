@@ -14,46 +14,47 @@ import {
 import { usePathname } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 const routes = [
   {
-    label: 'Dashboard',
+    label: 'dashboard',
     icon: LayoutDashboard,
     href: '/dashboard',
     color: 'text-sky-500'
   },
   {
-    label: 'Orders',
+    label: 'orders',
     icon: Receipt,
     href: '/orders',
     color: 'text-violet-500'
   },
   {
-    label: 'Products',
+    label: 'products',
     icon: Box,
     color: 'text-pink-700',
     href: '/products'
   },
   {
-    label: 'Categories',
+    label: 'categories',
     icon: Tag,
     color: 'text-emerald-500',
     href: '/categories'
   },
   {
-    label: 'Billboards',
+    label: 'billboards',
     icon: Megaphone,
     color: 'text-orange-700',
     href: '/billboards'
   },
   {
-    label: 'Colors',
+    label: 'colors',
     icon: Palette,
     color: 'text-green-700',
     href: '/colors'
   },
   {
-    label: 'Sizes',
+    label: 'sizes',
     icon: Ruler,
     href: '/sizes'
   }
@@ -61,6 +62,7 @@ const routes = [
 
 export const Sidebar = () => {
   const pathname = usePathname()
+  const t = useTranslations('Sidebar')
 
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-slate-50 dark:bg-slate-900 text-slate-950 dark:text-slate-50 border border-r-slate-200 dark:border-r-slate-800">
@@ -77,7 +79,7 @@ export const Sidebar = () => {
               key={route.href}
               href={route.href}
               className={cn(
-                'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-slate-950 dark:hover:text-slate-50 hover:bg-slate-200 rounded-lg transition',
+                'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-slate-950 dark:hover:text-slate-50 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition',
                 pathname === route.href
                   ? 'text-slate-950 dark:text-slate-50 bg-slate-200 dark:bg-slate-800'
                   : 'text-zinc-400'
@@ -85,7 +87,7 @@ export const Sidebar = () => {
             >
               <div className="flex items-center flex-1">
                 <route.icon className={cn('h-5 w-5 mr-3', route.color)} />
-                {route.label}
+                {t(route.label)}
               </div>
             </Link>
           ))}

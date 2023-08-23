@@ -11,6 +11,15 @@
     "title": "Create account",
     "description": "Create an account"
   },
+  "Sidebar": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "products": "Products",
+    "categories": "Categories",
+    "billboards": "Billboards",
+    "colors": "Colors",
+    "sizes": "Sizes"
+  },
   "LandingPage": {
     "title": "Your landing (unprotected)",
     "callToAction": "Get started"

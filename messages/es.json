@@ -11,6 +11,15 @@
     "title": "Crear una cuenta",
     "description": "Crea una cuenta"
   },
+  "Sidebar": {
+    "dashboard": "Dashboard",
+    "orders": "Ordenes",
+    "products": "Productos",
+    "categories": "Categorias",
+    "billboards": "Carteleras",
+    "colors": "Colores",
+    "sizes": "Tamaños"
+  },
   "LandingPage": {
     "title": "Inicio (sin proteger)",
     "callToAction": "Iniciar"
