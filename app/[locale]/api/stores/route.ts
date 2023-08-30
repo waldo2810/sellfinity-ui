@@ -1,4 +1,3 @@
-import { Store } from '@/interfaces'
 import { currentUser } from '@clerk/nextjs'
 import { NextRequest, NextResponse } from 'next/server'
 

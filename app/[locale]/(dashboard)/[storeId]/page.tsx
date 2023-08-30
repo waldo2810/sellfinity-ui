@@ -21,8 +21,8 @@ export async function generateMetadata({
   const t = createTranslator({ locale, messages })
 
   return {
-    title: t('DashboadPage.title'),
-    description: t('DashboadPage.description')
+    title: t('DashboardPage.title'),
+    description: t('DashboardPage.subtitle')
   }
 }
 

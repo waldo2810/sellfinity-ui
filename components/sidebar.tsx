@@ -62,7 +62,7 @@ const routes = [
   }
 ]
 
-export const Sidebar = ({ stores }: { stores: Store[] }) => {
+export const Sidebar = ({ stores }: { stores?: Store[] }) => {
   const { storeId } = useParams()
   const pathname = usePathname()
   const t = useTranslations('Sidebar')
@@ -79,7 +79,7 @@ export const Sidebar = ({ stores }: { stores: Store[] }) => {
           </div>
           <h1 className="text-2xl font-bold">Sellfinity</h1>
         </Link>
-        <StoreSwitcher className="" items={stores} />
+        {stores && <StoreSwitcher className="" items={stores} />}
         <div className="space-y-1">
           {routes.map(route => (
             <Link
