@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { ThemeProvider } from 'next-themes'
 import { FC } from 'react'
 import { ToastProvider } from './toast-provider'
+import { ModalProvider } from './modal-provider'
 
 interface ProvidersProps {
   children: React.ReactNode
@@ -16,6 +17,7 @@ const Providers: FC<ProvidersProps> = ({ children, locale, messages }) => {
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <ToastProvider />
+        <ModalProvider />
         {children}
       </ThemeProvider>
     </NextIntlClientProvider>

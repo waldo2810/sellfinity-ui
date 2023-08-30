@@ -13,7 +13,7 @@ export default authMiddleware({
     return intlMiddleware(req)
   },
 
-  publicRoutes: ['/']
+  publicRoutes: ['/api/:path*']
 })
 
 export const config = {

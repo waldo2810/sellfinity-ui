@@ -48,6 +48,18 @@
     "continueBtn": "Continue",
     "cancelBtn": "Cancel"
   },
+  "StoreModal": {
+    "title": "Create store",
+    "description": "Add a new store to manage products and categories.",
+    "placeholder": "E-Commerce",
+    "label": {
+      "name": "Name"
+    },
+    "button": {
+      "cancel": "Cancel",
+      "continue": "Continue"
+    }
+  },
   "BillboardForm": {
     "Create": {
       "title": "Create billboard",

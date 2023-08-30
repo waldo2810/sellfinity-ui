@@ -48,6 +48,18 @@
     "continueBtn": "Continuar",
     "cancelBtn": "Cancelar"
   },
+  "StoreModal": {
+    "title": "Crear  comercio",
+    "description": "Agrega un nuevo comercio para administrar tus productos y más.",
+    "placeholder": "Mi Comercio",
+    "label": {
+      "name": "Nombre"
+    },
+    "button": {
+      "cancel": "Cancelar",
+      "continue": "Continuar"
+    }
+  },
   "BillboardForm": {
     "Create": {
       "title": "Crear cartelera",

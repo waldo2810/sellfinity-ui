@@ -4,6 +4,7 @@ import { createTranslator, useLocale } from 'next-intl'
 import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { ReactNode } from 'react'
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 

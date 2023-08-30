@@ -1,3 +1,10 @@
+export interface Store {
+  id: number
+  name: string
+  userEmail: string
+  createdAt: string
+}
+
 export interface CategoriesOnProducts {
   productId: number
   categoryId: number
