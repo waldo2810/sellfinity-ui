@@ -2,15 +2,14 @@ import Navbar from '@/components/navbar'
 import { Sidebar } from '@/components/sidebar'
 import { Store } from '@/interfaces'
 import { currentUser } from '@clerk/nextjs'
-import { User } from '@clerk/nextjs/dist/types/server'
-import { redirect } from 'next-intl/server'
+import { redirect } from 'next/navigation'
 
 export default async function DashboardLayout({
   children
 }: {
   children: React.ReactNode
 }) {
-  const user: User | null = await currentUser()
+  const user = await currentUser()
 
   if (!user) {
     redirect('/sign-in')

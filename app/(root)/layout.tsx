@@ -3,7 +3,7 @@
 import { Store } from '@/interfaces'
 import { useUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 export default function SetupLayout({
   children
@@ -26,8 +26,12 @@ export default function SetupLayout({
 
       fetch(URL, { cache: 'no-store' })
         .then(res => res.json())
-        .then(data => setStores(data))
-        .catch(err => console.log(err))
+        .then(data => {
+          setStores(data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
     getData()
   }, [stores, user.primaryEmailAddress])
@@ -36,5 +40,9 @@ export default function SetupLayout({
     redirect(`/${stores[0].id}`)
   }
 
-  return <>{children}</>
+  return (
+    <>
+      <Suspense fallback={<p>loading...</p>}>{children}</Suspense>
+    </>
+  )
 }

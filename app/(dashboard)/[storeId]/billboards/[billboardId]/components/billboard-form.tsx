@@ -7,7 +7,6 @@ import { Billboard } from '@/interfaces'
 import { Separator } from '@/components/ui/separator'
 import axios from 'axios'
 import { Trash } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
@@ -42,13 +41,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const router = useRouter()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const t = useTranslations('BillboardForm')
-  const title = initialData ? t('Edit.title') : t('Create.title')
-  const description = initialData
-    ? t('Edit.description')
-    : t('Create.description')
-  const toastMessage = initialData ? t('Edit.toast') : t('Create.toast')
-  const action = initialData ? t('Edit.action') : t('Create.action')
+  const title = initialData ? 'Editar' : 'Crear nueva'
+  const description = initialData ? 'Editar existente' : 'Crear nueva'
+  const toastMessage = initialData ? 'Editado con exito' : 'Creada con exito'
+  const action = initialData ? 'Guardar cambios' : 'Crear'
 
   const onDelete = async () => {
     try {
@@ -113,7 +109,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
             title="Delete"
           >
             <Trash className="h-4 w-4" />
-            Delete
+            Eliminar cartelera
           </Button>
         )}
       </div>
@@ -128,7 +124,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
             name="imageUrl"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('Label.backgroundImage')}</FormLabel>
+                <FormLabel>Imagen de fondo</FormLabel>
                 <FormControl>
                   <ImageUpload
                     value={field.value ? [field.value] : []}
@@ -146,11 +142,11 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
               name="label"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('Label.label')}</FormLabel>
+                  <FormLabel>Nombre</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder={t('Placeholder.label')}
+                      placeholder="Un gran aviso"
                       {...field}
                     />
                   </FormControl>

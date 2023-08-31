@@ -4,7 +4,6 @@ import { toast } from 'react-hot-toast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge, BadgeProps } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { useTranslations } from 'next-intl'
 
 interface ApiAlertProps {
   title: string
@@ -27,10 +26,9 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({
   description,
   variant = 'public'
 }) => {
-  const t = useTranslations('ApiAlert')
   const onCopy = (description: string) => {
     navigator.clipboard.writeText(description)
-    toast.success(t('toast.success'))
+    toast.success('toast.success')
   }
 
   return (

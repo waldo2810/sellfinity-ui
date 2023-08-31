@@ -1,11 +1,9 @@
-import { CreditCard, DollarSign, Package } from 'lucide-react'
-
+import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
+import { Metadata } from 'next'
+//import { CreditCard, DollarSign, Package } from 'lucide-react'
 // import { Overview } from '@/components/overview'
 // import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Heading } from '@/components/ui/heading'
-import { Metadata } from 'next'
-import { createTranslator, useTranslations } from 'next-intl'
 // import { getTotalRevenue } from '@/actions/get-total-revenue'
 // import { getSalesCount } from '@/actions/get-sales-count'
 // import { getGraphRevenue } from '@/actions/get-graph-revenue'
@@ -17,12 +15,9 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
-  const messages = (await import(`../../../../messages/${locale}.json`)).default
-  const t = createTranslator({ locale, messages })
-
   return {
-    title: t('DashboardPage.title'),
-    description: t('DashboardPage.subtitle')
+    title: 'Inicio',
+    description: 'Vista general de tu tienda'
   }
 }
 
@@ -33,7 +28,6 @@ interface DashboardPageProps {
 }
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ params }) => {
-  const t = useTranslations('DashboardPage')
   // const totalRevenue = await getTotalRevenue(params.storeId)
   // const graphRevenue = await getGraphRevenue(params.storeId)
   // const salesCount = await getSalesCount(params.storeId)
@@ -42,7 +36,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ params }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <Heading title={t('title')} description={t('subtitle')} />
+        <Heading title="Inicio" description="Una vista general de tu tienda" />
         <Separator />
         {/* <div className="grid gap-4 grid-cols-3">
           <Card>

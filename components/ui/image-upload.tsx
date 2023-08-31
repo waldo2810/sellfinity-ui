@@ -3,7 +3,6 @@ import { ImagePlus, ImagePlusIcon, Trash } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from './button'
 import { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
 
 interface ImageUploadProps {
   disabled?: boolean
@@ -19,7 +18,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   value
 }) => {
   const UPLOAD_PRESET = 'eowbpzrv'
-  const t = useTranslations('UploadImageComponent')
   const onUpload = (result: any) => {
     onChange(result.info.secure_url)
   }
@@ -74,7 +72,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
               title="upload image"
             >
               <ImagePlus className="h-4 w-4 mr-2" />
-              {t('uploadBtn')}
+              Subir imagen
             </Button>
           )
         }}

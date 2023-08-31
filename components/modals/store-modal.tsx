@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
@@ -20,15 +19,15 @@ import {
 import { Input } from '@/components/ui/input'
 import { Modal } from '@/components/ui/modal'
 import { useStoreModal } from '@/hooks/use-store-modal'
-import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 const formSchema = z.object({
   name: z.string().min(1)
 })
 
 export const StoreModal = () => {
-  const t = useTranslations('StoreModal')
   const storeModal = useStoreModal()
+  const { storeId } = useParams()
 
   const [loading, setLoading] = useState(false)
 
@@ -53,8 +52,8 @@ export const StoreModal = () => {
 
   return (
     <Modal
-      title={t('title')}
-      description={t('description')}
+      title="Crea una tienda"
+      description="Agrega un nuevo comercio para administrar tus productos"
       isOpen={storeModal.isOpen}
       onClose={storeModal.onClose}
     >
@@ -68,11 +67,11 @@ export const StoreModal = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('label.name')}</FormLabel>
+                      <FormLabel>Nombre</FormLabel>
                       <FormControl>
                         <Input
                           disabled={loading}
-                          placeholder={t('placeholder')}
+                          placeholder="Mi comercio"
                           {...field}
                         />
                       </FormControl>
@@ -86,10 +85,10 @@ export const StoreModal = () => {
                     variant="outline"
                     onClick={storeModal.onClose}
                   >
-                    {t('button.cancel')}
+                    Cancelar
                   </Button>
                   <Button disabled={loading} type="submit">
-                    {t('button.continue')}
+                    Continuar
                   </Button>
                 </div>
               </form>

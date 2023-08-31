@@ -1,20 +1,13 @@
 import { Metadata } from 'next'
-import { createTranslator } from 'next-intl'
 import { BillboardClient } from './components/client'
 import { BillboardColumn } from './components/columns'
 
-export async function generateMetadata({
-  params: { locale }
-}: {
+export async function generateMetadata({}: {
   params: { locale: string }
 }): Promise<Metadata> {
-  const messages = (await import(`../../../../../messages/${locale}.json`))
-    .default
-  const t = createTranslator({ locale, messages })
-
   return {
-    title: t('BillboardsPage.title'),
-    description: t('BillboardsPage.description')
+    title: 'Carteleras',
+    description: 'Administra creativas carteleras para llamar la atención'
   }
 }
 

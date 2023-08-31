@@ -21,7 +21,6 @@ import {
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useTranslations } from 'next-intl'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -47,13 +46,11 @@ export function DataTable<TData, TValue>({
     }
   })
 
-  const t = useTranslations('BillboardDataTable')
-
   return (
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder={t('placeholder')}
+          placeholder="Buscar"
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
           onChange={event =>
             table.getColumn(searchKey)?.setFilterValue(event.target.value)
@@ -104,7 +101,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {t('noResults')}
+                  No hay resultados
                 </TableCell>
               </TableRow>
             )}
@@ -118,7 +115,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          {t('rePag')}
+          Retroceder
         </Button>
         <Button
           variant="outline"
@@ -126,7 +123,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          {t('avPag')}
+          Avanzar
         </Button>
       </div>
     </div>

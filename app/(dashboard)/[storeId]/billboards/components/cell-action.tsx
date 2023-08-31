@@ -2,7 +2,7 @@
 
 import axios from 'axios'
 import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 
@@ -17,27 +17,26 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { BillboardColumn } from './columns'
-import { useTranslations } from 'next-intl'
 
 interface CellActionProps {
   data: BillboardColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+  const params = useParams()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const t = useTranslations('BillboardDataTable')
-
   const onConfirm = async () => {
+    const URL = `/api/billboards/${data.id}`
     try {
       setLoading(true)
-      await axios.delete(`/api/billboards/${data.id}`)
-      toast.success(t('actions.delete.toast.success'))
+      await axios.delete(URL)
+      toast.success('Se ha eliminado el registro')
       router.refresh()
     } catch (error) {
-      toast.error(t('actions.delete.toast.error'))
+      toast.error('A ocurrido un error')
     } finally {
       setOpen(false)
       setLoading(false)
@@ -46,7 +45,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   const onCopy = (id: number) => {
     navigator.clipboard.writeText(id.toString())
-    toast.success(t('actions.copy.toast.success'))
+    toast.success('Se ha copiado al portapapeles')
   }
 
   return (
@@ -65,17 +64,26 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t('actions.title')}</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(data.id)}>
-            <Copy className="mr-2 h-4 w-4" /> {t('actions.copy.title')}
+          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => onCopy(data.id)}
+            className="cursor-pointer"
+          >
+            <Copy className="mr-2 h-4 w-4" /> Copiar ID
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/billboards/${data.id}`)}
+            onClick={() =>
+              router.push(`/${params.storeId}/billboards/${data.id}`)
+            }
+            className="cursor-pointer"
           >
-            <Edit className="mr-2 h-4 w-4" /> {t('actions.update')}
+            <Edit className="mr-2 h-4 w-4" /> Actualizar
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> {t('actions.delete.title')}
+          <DropdownMenuItem
+            onClick={() => setOpen(true)}
+            className="cursor-pointer"
+          >
+            <Trash className="mr-2 h-4 w-4" /> Eliminar
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

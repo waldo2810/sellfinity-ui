@@ -3,7 +3,6 @@
 import { ColumnDef } from '@tanstack/react-table'
 
 import { CellAction } from './cell-action'
-import { useTranslations } from 'next-intl'
 
 export type BillboardColumn = {
   id: number

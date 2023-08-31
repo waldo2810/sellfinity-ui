@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 
 import { Modal } from '@/components/ui/modal'
 import { Button } from '@/components/ui/button'
-import { useTranslations } from 'next-intl'
 
 interface AlertModalProps {
   isOpen: boolean
@@ -19,7 +18,6 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   onConfirm,
   loading
 }) => {
-  const t = useTranslations('AlertModal')
   const [isMounted, setIsMounted] = useState<Boolean>(false)
 
   useEffect(() => {
@@ -32,8 +30,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 
   return (
     <Modal
-      title={t('title')}
-      description={t('description')}
+      title="¿Está seguro que desea continuar?"
+      description="Esta acción no se puede deshacer"
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -45,7 +43,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
           aria-label="cancel button"
           title="cancel button"
         >
-          {t('cancelBtn')}
+          Cancelar
         </Button>
         <Button
           disabled={loading}
@@ -54,7 +52,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
           aria-label="continue button"
           title="continue button"
         >
-          {t('continueBtn')}
+          Continuar
         </Button>
       </div>
     </Modal>

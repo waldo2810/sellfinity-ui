@@ -24,7 +24,7 @@ const BillboardPage = async ({ params }: BillboardPageProps) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 px-8">
-        <BillboardForm initialData={billboard} />
+        <BillboardForm initialData={null} />
       </div>
     </div>
   )
