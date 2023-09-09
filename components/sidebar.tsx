@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils'
 import StoreSwitcher from './store-switcher'
 import { Store } from '@/interfaces'
 
-export const Sidebar = ({ stores }: { stores?: Store[] }) => {
+export const Sidebar = () => {
   const params = useParams()
   const pathname = usePathname()
   const routes = [
@@ -66,18 +66,17 @@ export const Sidebar = ({ stores }: { stores?: Store[] }) => {
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-slate-50 dark:bg-slate-900 text-slate-950 dark:text-slate-50 border border-r-slate-200 dark:border-r-slate-800">
       <div className="px-3 py-2 flex-1">
-        {/* <Link href={`/${storeId}`} className="flex items-center pl-3 mb-14">
+        <Link
+          href={`/${params.storeId}`}
+          className="flex items-center pl-3 mb-14"
+        >
           <div className="relative h-8 w-8 mr-4">
             <Image fill alt="Logo" src="/logo.png" />
           </div>
-          <h1 className="text-2xl font-bold">Sellfinity</h1>
-        </Link> */}
-        {stores && (
-          <StoreSwitcher
-            className="flex items-center pl-3 mb-14"
-            items={stores}
-          />
-        )}
+          <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#EA208B] via-[#00AACF] to-[#FBB03B]">
+            Sellfinity
+          </h1>
+        </Link>
         <div className="space-y-1">
           {routes.map(route => (
             <Link

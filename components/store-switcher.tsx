@@ -1,9 +1,8 @@
 'use client'
 
-import * as React from 'react'
 import { Check, ChevronsUpDown, PlusCircle, Store } from 'lucide-react'
+import { useState } from 'react'
 
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -20,6 +19,7 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import { useStoreModal } from '@/hooks/use-store-modal'
+import { cn } from '@/lib/utils'
 import { useParams, useRouter } from 'next/navigation'
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
@@ -41,11 +41,9 @@ export default function StoreSwitcher({
     value: item.id
   }))
 
-  const currentStore = formattedItems.find(
-    item => item.value === params.storeId
-  )
+  const currentStore = formattedItems.find(item => item.value == params.storeId)
 
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState<boolean>(false)
 
   const onStoreSelect = (store: { value: string; label: string }) => {
     setOpen(false)
@@ -57,11 +55,10 @@ export default function StoreSwitcher({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          size="sm"
           role="combobox"
           aria-expanded={open}
           aria-label="Select a store"
-          className={cn('w-[200px] justify-between', className)}
+          className={cn('w-full md:w-[200px] justify-between', className)}
         >
           <Store className="mr-2 h-4 w-4" />
           {currentStore?.label}

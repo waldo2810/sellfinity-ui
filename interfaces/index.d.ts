@@ -28,15 +28,13 @@ export interface Products {
 export interface Category {
   id: number
   name: string
-  products: Product[]
   createdAt: string
-  updatedAt: string
 }
 
 export interface Billboard {
   id: number
+  store: Store
+  category: Category
   label: string
   imageUrl: string
-  createdAt: string
-  updatedAt: string
 }
