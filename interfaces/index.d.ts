@@ -31,6 +31,20 @@ export interface Category {
   createdAt: string
 }
 
+export interface Color {
+  id: number
+  name: string
+  value: string
+  createdAt: string
+}
+
+export interface Size {
+  id: number
+  name: string
+  value: string
+  createdAt: string
+}
+
 export interface Billboard {
   id: number
   store: Store

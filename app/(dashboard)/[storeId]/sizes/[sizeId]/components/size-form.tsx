@@ -11,18 +11,9 @@ import {
   FormLabel
 } from '@/components/ui/form'
 import { Heading } from '@/components/ui/heading'
-import { ImageUpload } from '@/components/ui/image-upload'
 import { Input } from '@/components/ui/input'
-import { Loader } from '@/components/ui/loader'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { Billboard, Category } from '@/interfaces'
+import { Size } from '@/interfaces'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { Trash } from 'lucide-react'
@@ -33,22 +24,17 @@ import { toast } from 'react-hot-toast'
 import z from 'zod'
 
 const formSchema = z.object({
-  label: z.string().min(1),
-  categoryId: z.string().min(1),
-  imageUrl: z.string().min(1)
+  name: z.string().min(1),
+  value: z.string().min(1)
 })
 
-type BillboardFormValues = z.infer<typeof formSchema>
+type SizeFormValues = z.infer<typeof formSchema>
 
-interface BillboardFormProps {
-  initialData: Billboard | null
-  categories: Category[] | null
+interface SizeFormProps {
+  initialData: Size | null
 }
 
-export const BillboardForm: React.FC<BillboardFormProps> = ({
-  initialData,
-  categories
-}) => {
+export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
   const params = useParams()
   const router = useRouter()
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -61,37 +47,37 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const onDelete = async () => {
     try {
       setIsLoading(true)
-      await axios.delete(`/api/billboards/${params.billboardId}`)
-      router.refresh()
-      router.push(`/billboards`)
-      toast.success('Billboard deleted.')
-    } catch (error: any) {
-      toast.error(
-        'Make sure you removed all categories using this billboard first.'
+      await axios.delete(
+        `${appEndpoints.sizes}/${params.sizeId}?storeId=${params.storeId}`
       )
+      router.refresh()
+      // TODO router.push(`${params.storeId}/sizes`) --> THIS PUSHES ON TOP OF THE EXISTING /1/SIZES
+      router.back()
+      toast.success('Size deleted.')
+    } catch (error: any) {
+      toast.error('Error eliminando la talla.')
     } finally {
       setIsLoading(false)
       setIsOpen(false)
     }
   }
 
-  const onSubmit = async (data: BillboardFormValues) => {
+  const onSubmit = async (data: SizeFormValues) => {
     try {
       setIsLoading(true)
       if (initialData) {
         await axios.put(
-          `${appEndpoints.billboards}/${params.billboardId}?storeId=${params.storeId}`,
+          `${appEndpoints.sizes}/${params.sizeId}?storeId=${params.storeId}`,
           data
         )
       } else {
         await axios.post(
-          `${appEndpoints.billboards}?storeId=${params.storeId}`,
+          `${appEndpoints.sizes}?storeId=${params.storeId}`,
           data
         )
       }
       router.refresh()
       router.back()
-      //window.location.assign(`${params.storeId}/billboards`)
       toast.success(toastMessage)
     } catch (error: any) {
       console.log('[CLIENT] error posting ---->', error)
@@ -101,12 +87,11 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     }
   }
 
-  const form = useForm<BillboardFormValues>({
+  const form = useForm<SizeFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: '',
-      categoryId: '',
-      imageUrl: ''
+      name: '',
+      value: ''
     }
   })
 
@@ -130,7 +115,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
             title="Delete"
           >
             <Trash className="h-4 w-4" />
-            Eliminar cartelera
+            Eliminar talla
           </Button>
         )}
       </div>
@@ -140,66 +125,32 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Imagen de fondo</FormLabel>
-                <FormControl>
-                  <ImageUpload
-                    value={field.value ? [field.value] : []}
-                    disabled={isLoading}
-                    onChange={url => field.onChange(url)}
-                    onRemove={() => field.onChange('')}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="label"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="Un gran aviso"
+                      placeholder="Large"
                       {...field}
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <FormField //SELECT COMPONENT
+            <FormField
               control={form.control}
-              name="categoryId"
+              name="value"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Categoria</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecciona la categoria a la que pertenece" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories?.map(category => (
-                        <SelectItem
-                          key={category.id}
-                          value={category.id.toString()}
-                        >
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Valor</FormLabel>
+                  <FormControl>
+                    <Input disabled={isLoading} placeholder="L" {...field} />
+                  </FormControl>
                 </FormItem>
               )}
             />

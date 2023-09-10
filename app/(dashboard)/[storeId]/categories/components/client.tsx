@@ -8,14 +8,14 @@ import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/ui/data-table'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
-import { BillboardColumn, columns } from './columns'
 import { useState } from 'react'
+import { CategoryColumn, columns } from './columns'
 
-interface BillboardClientProps {
-  data: BillboardColumn[]
+interface CategoryClientProps {
+  data: CategoryColumn[]
 }
 
-export const BillboardClient: React.FC<BillboardClientProps> = ({ data }) => {
+export const CategoryClient: React.FC<CategoryClientProps> = ({ data }) => {
   const params = useParams()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -23,18 +23,18 @@ export const BillboardClient: React.FC<BillboardClientProps> = ({ data }) => {
     <>
       <div className="mb-8 space-y-4 md:flex items-center justify-between">
         <Heading
-          title={'Carteleras'.concat(` (${data.length})`)}
-          description="Administra creativas carteleras para llamar la atención"
+          title={'Categorias'.concat(` (${data.length})`)}
+          description="Administra diversas categorias de productos"
         />
         <Button
           size="smFlexMdFull"
           onClick={() => {
             setIsLoading(true)
-            router.push(`/${params.storeId}/billboards/new`)
+            router.push(`/${params.storeId}/categories/new`)
             setIsLoading(false)
           }}
-          aria-label="Add billboard"
-          title="Add billboard"
+          aria-label="Add category"
+          title="Add category"
           disabled={isLoading}
         >
           <Plus />
@@ -42,10 +42,10 @@ export const BillboardClient: React.FC<BillboardClientProps> = ({ data }) => {
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="label" columns={columns} data={data} />
+      <DataTable searchKey="name" columns={columns} data={data} />
       <Heading title="API" description="Documentación de API" />
       <Separator />
-      <ApiList entityName="billboards" entityIdName="billboardId" />
+      <ApiList entityName="categories" entityIdName="categoryId" />
     </>
   )
 }

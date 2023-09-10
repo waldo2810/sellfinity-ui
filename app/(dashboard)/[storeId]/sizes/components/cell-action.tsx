@@ -16,10 +16,10 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import { BillboardColumn } from './columns'
+import { SizeColumn } from './columns'
 
 interface CellActionProps {
-  data: BillboardColumn
+  data: SizeColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -29,14 +29,14 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false)
 
   const onConfirm = async () => {
-    const URL = `/api/billboards/${data.id}?storeId=${params.storeId}`
+    const URL = `/api/sizes/${data.id}?storeId=${params.storeId}`
     try {
       setLoading(true)
       await axios.delete(URL)
       toast.success('Se ha eliminado el registro')
       router.refresh()
     } catch (error) {
-      toast.error('A ocurrido un error')
+      toast.error('Error eliminando la talla.')
     } finally {
       setOpen(false)
       setLoading(false)
@@ -72,9 +72,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <Copy className="mr-2 h-4 w-4" /> Copiar ID
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() =>
-              router.push(`/${params.storeId}/billboards/${data.id}`)
-            }
+            onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}
             className="cursor-pointer"
           >
             <Edit className="mr-2 h-4 w-4" /> Actualizar

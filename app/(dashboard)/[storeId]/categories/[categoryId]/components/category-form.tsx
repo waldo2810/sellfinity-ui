@@ -33,22 +33,16 @@ import { toast } from 'react-hot-toast'
 import z from 'zod'
 
 const formSchema = z.object({
-  label: z.string().min(1),
-  categoryId: z.string().min(1),
-  imageUrl: z.string().min(1)
+  name: z.string().min(1)
 })
 
-type BillboardFormValues = z.infer<typeof formSchema>
+type CategoryFormValues = z.infer<typeof formSchema>
 
-interface BillboardFormProps {
-  initialData: Billboard | null
-  categories: Category[] | null
+interface CategoryFormProps {
+  initialData: Category | null
 }
 
-export const BillboardForm: React.FC<BillboardFormProps> = ({
-  initialData,
-  categories
-}) => {
+export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
   const params = useParams()
   const router = useRouter()
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -61,13 +55,13 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const onDelete = async () => {
     try {
       setIsLoading(true)
-      await axios.delete(`/api/billboards/${params.billboardId}`)
+      await axios.delete(`${appEndpoints.categories}/${params.billboardId}`)
       router.refresh()
-      router.push(`/billboards`)
+      router.push(`/categories`)
       toast.success('Billboard deleted.')
     } catch (error: any) {
       toast.error(
-        'Make sure you removed all categories using this billboard first.'
+        'Make sure you removed all products using this category first.'
       )
     } finally {
       setIsLoading(false)
@@ -75,23 +69,23 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     }
   }
 
-  const onSubmit = async (data: BillboardFormValues) => {
+  const onSubmit = async (data: CategoryFormValues) => {
     try {
       setIsLoading(true)
       if (initialData) {
         await axios.put(
-          `${appEndpoints.billboards}/${params.billboardId}?storeId=${params.storeId}`,
+          `${appEndpoints.categories}/${params.categoryId}?storeId=${params.storeId}`,
           data
         )
       } else {
         await axios.post(
-          `${appEndpoints.billboards}?storeId=${params.storeId}`,
+          `${appEndpoints.categories}?storeId=${params.storeId}`,
           data
         )
       }
       router.refresh()
       router.back()
-      //window.location.assign(`${params.storeId}/billboards`)
+      //window.location.assign(`${params.storeId}/categories`)
       toast.success(toastMessage)
     } catch (error: any) {
       console.log('[CLIENT] error posting ---->', error)
@@ -101,12 +95,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     }
   }
 
-  const form = useForm<BillboardFormValues>({
+  const form = useForm<CategoryFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: '',
-      categoryId: '',
-      imageUrl: ''
+      name: ''
     }
   })
 
@@ -130,7 +122,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
             title="Delete"
           >
             <Trash className="h-4 w-4" />
-            Eliminar cartelera
+            Eliminar categoría
           </Button>
         )}
       </div>
@@ -140,66 +132,20 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Imagen de fondo</FormLabel>
-                <FormControl>
-                  <ImageUpload
-                    value={field.value ? [field.value] : []}
-                    disabled={isLoading}
-                    onChange={url => field.onChange(url)}
-                    onRemove={() => field.onChange('')}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="label"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="Un gran aviso"
+                      placeholder="Articulos para el hogar"
                       {...field}
                     />
                   </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField //SELECT COMPONENT
-              control={form.control}
-              name="categoryId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Categoria</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecciona la categoria a la que pertenece" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories?.map(category => (
-                        <SelectItem
-                          key={category.id}
-                          value={category.id.toString()}
-                        >
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                 </FormItem>
               )}
             />

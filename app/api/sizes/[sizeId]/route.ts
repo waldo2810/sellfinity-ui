@@ -1,55 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
 import serverEndpoints from '../../server.endpoints'
 
-const endpoint = `http://localhost:8080/api/billboards`
-
+// GET A SIZE BY ITS ID
 export async function GET(
   req: NextRequest,
-  { params }: { params: { billboardId: number } }
+  { params }: { params: { sizeId: number } }
 ) {
-  if (!params.billboardId)
-    return new Response('Billboard id must be provided', { status: 404 })
+  if (!params.sizeId)
+    return new Response('Size id must be provided', { status: 404 })
 
   try {
-    const res = await fetch(`${endpoint}/${params.billboardId}`)
+    const res = await fetch(
+      `${serverEndpoints.sizes}/${serverEndpoints.search}/${params.sizeId}`
+    )
     if (!res.ok) {
       return NextResponse.json(res.statusText, { status: res.status })
     }
-    const billboard = await res.json()
-    if (!billboard) return NextResponse.json(null)
-    return NextResponse.json(billboard)
+    const size = await res.json()
+    if (!size) return NextResponse.json(null)
+    return NextResponse.json(size)
   } catch (error) {
     console.log('ERROR--->', error)
   }
 }
 
-// UPDATE A BILLBOARD
+// UPDATE A SIZE
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { billboardId: string } }
+  { params }: { params: { sizeId: string } }
 ) {
   const { searchParams } = new URL(req.url)
   const storeId = searchParams.get('storeId')
   if (!storeId) return new Response('A store must be provided', { status: 404 })
 
-  const {
-    label,
-    imageUrl,
-    categoryId
-  }: { label: string; imageUrl: string; categoryId: number } = await req.json()
+  const { name, value }: { name: string; value: string } = await req.json()
   await fetch(
-    `${serverEndpoints.billboards}/${serverEndpoints.update}/${params.billboardId}`,
+    `${serverEndpoints.sizes}/${serverEndpoints.update}/${params.sizeId}`,
     {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        storeId,
-        categoryId,
-        label,
-        imageUrl
-      })
+      body: JSON.stringify({ name, value, storeId })
     }
   )
   return NextResponse.json({ status: 200 })
@@ -58,13 +50,13 @@ export async function PUT(
 // DELETE A SIZE
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { billboardId: string } }
+  { params }: { params: { sizeId: string } }
 ) {
   const { searchParams } = new URL(req.url)
   const storeId = searchParams.get('storeId')
   if (!storeId) return new Response('A store must be provided', { status: 404 })
   await fetch(
-    `${serverEndpoints.billboards}/${serverEndpoints.delete}/${params.billboardId}`,
+    `${serverEndpoints.sizes}/${serverEndpoints.delete}/${params.sizeId}`,
     {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }

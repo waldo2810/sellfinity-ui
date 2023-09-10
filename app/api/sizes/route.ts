@@ -1,39 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server'
 import serverEndpoints from '../server.endpoints'
 
-// GET ALL THE CATEGORIES OF A STORE
+// GET ALL THE SIZES OF A STORE
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const storeId = searchParams.get('storeId')
   if (!storeId) return new Response('A store must be provided', { status: 404 })
 
   try {
-    const res = await fetch(serverEndpoints.categories + '?storeId=' + storeId)
+    const res = await fetch(serverEndpoints.sizes + '?storeId=' + storeId)
     if (!res.ok) {
       return NextResponse.json(res.statusText, { status: res.status })
     }
-    const categories = await res.json()
-    if (!categories) return NextResponse.json(null)
-    return NextResponse.json(categories)
+    const sizes = await res.json()
+    if (!sizes) return NextResponse.json(null)
+    return NextResponse.json(sizes)
   } catch (error) {
     console.log('ERROR FETCHING FROM DB ->', error)
   }
 }
 
-// SAVE A CATEGORY
+// SAVE A SIZE
 export async function POST(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const storeId = searchParams.get('storeId')
   if (!storeId) return new Response('A store must be provided', { status: 404 })
 
-  const { name }: { name: string } = await req.json()
-  const res = await fetch(serverEndpoints.categories, {
+  const { name, value }: { name: string; value: string } = await req.json()
+  const res = await fetch(serverEndpoints.sizes, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       name,
+      value,
       storeId
     })
   })

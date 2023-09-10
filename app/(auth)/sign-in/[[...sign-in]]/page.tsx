@@ -6,8 +6,8 @@ export async function generateMetadata({
   params: { locale: string }
 }) {
   return {
-    title: 'SignInPage.title',
-    description: 'SignUpPage.description'
+    title: 'Iniciar sesión',
+    description: 'Inicia sesión a tu cuenta'
   }
 }
 

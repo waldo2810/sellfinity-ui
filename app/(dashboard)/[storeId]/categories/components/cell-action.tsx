@@ -16,10 +16,10 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import { BillboardColumn } from './columns'
+import { CategoryColumn } from './columns'
 
 interface CellActionProps {
-  data: BillboardColumn
+  data: CategoryColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -73,7 +73,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              router.push(`/${params.storeId}/billboards/${data.id}`)
+              router.push(`/${params.storeId}/categories/${data.id}`)
             }
             className="cursor-pointer"
           >
