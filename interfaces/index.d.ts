@@ -10,7 +10,7 @@ export interface CategoriesOnProducts {
   categoryId: number
 }
 
-export interface Products {
+export interface Product {
   id: number
   categories: Category[]
   name: string
@@ -51,4 +51,11 @@ export interface Billboard {
   category: Category
   label: string
   imageUrl: string
+}
+
+export interface Image {
+  id: number
+  productId: number
+  url: string
+  createdAt: string
 }

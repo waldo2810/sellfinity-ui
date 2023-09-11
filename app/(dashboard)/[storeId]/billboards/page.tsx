@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { BillboardClient } from './components/client'
 import { BillboardColumn } from './components/columns'
 import { Billboard } from '@/interfaces'
+import appEndpoints from '@/app/api/app.endpoints'
 
 export async function generateMetadata({}: {
   params: { locale: string }
@@ -17,7 +18,7 @@ export default async function BillboardsPage({
 }: {
   params: { storeId: number }
 }) {
-  const URL = `http://localhost:3000/api/billboards?storeId=${params.storeId}`
+  const URL = `${appEndpoints.billboards}?storeId=${params.storeId}`
   const billboards: BillboardColumn[] = await fetch(URL, { cache: 'no-store' })
     .then(res => res.json())
     .catch(error => console.log('ERROR FROM SERVER ->', error))

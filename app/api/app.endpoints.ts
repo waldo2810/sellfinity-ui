@@ -4,7 +4,8 @@ const appEndpoints = {
   billboards: `${base}/api/billboards`,
   categories: `${base}/api/categories`,
   sizes: `${base}/api/sizes`,
-  colors: `${base}/api/colors`
+  colors: `${base}/api/colors`,
+  products: `${base}/api/products`
 }
 
 export default appEndpoints

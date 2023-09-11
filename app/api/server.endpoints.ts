@@ -5,6 +5,7 @@ const serverEndpoints = {
   categories: `${base}/api/categories`,
   colors: `${base}/api/colors`,
   sizes: `${base}/api/sizes`,
+  products: `${base}/api/products`,
   update: `update`,
   search: `search`,
   delete: `delete`
