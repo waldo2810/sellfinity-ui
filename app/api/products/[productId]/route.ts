@@ -63,7 +63,7 @@ export async function PUT(
   return NextResponse.json({ status: 200 })
 }
 
-// DELETE A SIZE
+// DELETE A PRODUCT
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { productId: string } }

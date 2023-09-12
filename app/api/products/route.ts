@@ -28,6 +28,8 @@ export async function POST(req: NextRequest) {
 
   const {
     categoryIds,
+    sizeIds,
+    colorIds,
     name,
     price,
     isFeatured,
@@ -35,6 +37,8 @@ export async function POST(req: NextRequest) {
     images
   }: {
     categoryIds: number[]
+    sizeIds: number[]
+    colorIds: number[]
     name: string
     price: number
     isFeatured: boolean
@@ -49,6 +53,8 @@ export async function POST(req: NextRequest) {
     body: JSON.stringify({
       storeId,
       categoryIds,
+      sizeIds,
+      colorIds,
       name,
       price,
       isFeatured,
@@ -56,18 +62,6 @@ export async function POST(req: NextRequest) {
       images
     })
   })
-  console.log('----------------------------------->', res.status)
-  console.log(
-    JSON.stringify({
-      storeId,
-      categoryIds,
-      name,
-      price,
-      isFeatured,
-      isArchived,
-      images
-    })
-  )
   const product = await res.json()
   return NextResponse.json(product)
 }

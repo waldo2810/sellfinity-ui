@@ -44,8 +44,12 @@ const formSchema = z.object({
   categoryIds: z.array(z.string()).refine(value => value.some(item => item), {
     message: 'You have to select at least one item.'
   }),
-  colorId: z.string().min(1),
-  sizeId: z.string().min(1),
+  colorIds: z.array(z.string()).refine(value => value.some(item => item), {
+    message: 'You have to select at least one item.'
+  }),
+  sizeIds: z.array(z.string()).refine(value => value.some(item => item), {
+    message: 'You have to select at least one item.'
+  }),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional()
 })
@@ -72,9 +76,13 @@ export const ProductForm: FC<ProductFormProps> = ({
   const router = useRouter()
 
   const [open, setOpen] = useState(false)
-  const [openCommand, setOpenCommand] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [selectedCategories, setSelectedCategories] = useState([categories[0]])
+  const [openCommand, setOpenCommand] = useState<boolean>(false)
+  const [openSizesCommand, setOpenSizesCommand] = useState<boolean>(false)
+  const [openColorsCommand, setOpenColorsCommand] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([])
+  const [selectedSizes, setSelectedSizes] = useState<Size[]>([])
+  const [selectedColors, setSelectedColors] = useState<Color[]>([])
   const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -93,8 +101,8 @@ export const ProductForm: FC<ProductFormProps> = ({
         images: [],
         price: 0,
         categoryIds: [],
-        colorId: '',
-        sizeId: '',
+        colorIds: [],
+        sizeIds: [],
         isFeatured: false,
         isArchived: false
       }
@@ -109,18 +117,17 @@ export const ProductForm: FC<ProductFormProps> = ({
       setLoading(true)
       if (initialData) {
         await axios.put(
-          `/api/${params.storeId}/products/${params.productId}`,
+          `${appEndpoints.products}/${params.productId}?storeId=${params.storeId}`,
           data
         )
       } else {
-        console.log('----------------------------->', data)
         await axios.post(
           `${appEndpoints.products}?storeId=${params.storeId}`,
           data
         )
       }
-      // router.refresh()
-      // router.push(`/${params.storeId}/products`)
+      router.refresh()
+      router.push(`/${params.storeId}/products`)
       toast.success(toastMessage)
     } catch (error: any) {
       toast.error('Something went wrong.')
@@ -131,9 +138,11 @@ export const ProductForm: FC<ProductFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true)
-      await axios.delete(`/api/${params.storeId}/products/${params.productId}`)
-      // router.refresh()
-      // router.push(`/${params.storeId}/products`)
+      await axios.delete(
+        `${appEndpoints.products}/${params.productId}?storeId=${params.storeId}`
+      )
+      router.refresh()
+      router.push(`/${params.storeId}/products`)
       toast.success('Product deleted.')
     } catch (error: any) {
       toast.error('Something went wrong.')
@@ -142,8 +151,14 @@ export const ProductForm: FC<ProductFormProps> = ({
       setOpen(false)
     }
   }
-  const handleUnselect = useCallback((category: Category) => {
-    setSelectedCategories(prev => prev.filter(s => s.id !== category.id))
+  const handleUnselectCategory = useCallback((item: Category) => {
+    setSelectedCategories(prev => prev.filter(s => s.id !== item.id))
+  }, [])
+  const handleUnselectSize = useCallback((item: Size) => {
+    setSelectedSizes(prev => prev.filter(s => s.id !== item.id))
+  }, [])
+  const handleUnselectColor = useCallback((item: Color) => {
+    setSelectedColors(prev => prev.filter(s => s.id !== item.id))
   }, [])
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -167,15 +182,25 @@ export const ProductForm: FC<ProductFormProps> = ({
     []
   )
 
-  const selectables = categories.filter(
+  const selectableCategories = categories.filter(
     (category: Category) => !selectedCategories.includes(category)
+  )
+  const selectableSizes = sizes.filter(
+    (size: Size) => !selectedSizes.includes(size)
+  )
+  const selectableColors = colors.filter(
+    (color: Color) => !selectedColors.includes(color)
   )
 
   useEffect(() => {
     const categoryIds = selectedCategories.map(cat => cat.id.toString())
+    const sizeIds = selectedSizes.map(size => size.id.toString())
+    const colorIds = selectedColors.map(color => color.id.toString())
 
     form.setValue('categoryIds', categoryIds)
-  }, [form, selectedCategories])
+    form.setValue('sizeIds', sizeIds)
+    form.setValue('colorIds', colorIds)
+  }, [form, selectedCategories, selectedColors, selectedSizes])
 
   return (
     <>
@@ -209,7 +234,7 @@ export const ProductForm: FC<ProductFormProps> = ({
             name="images"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Images</FormLabel>
+                <FormLabel>Imagenes</FormLabel>
                 <FormControl>
                   <ImageUpload
                     value={field.value.map(image => image.url)}
@@ -232,13 +257,9 @@ export const ProductForm: FC<ProductFormProps> = ({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nombre</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Product name"
-                      {...field}
-                    />
+                    <Input disabled={loading} placeholder="Blusa" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -249,7 +270,7 @@ export const ProductForm: FC<ProductFormProps> = ({
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price</FormLabel>
+                  <FormLabel>Precio</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -262,13 +283,12 @@ export const ProductForm: FC<ProductFormProps> = ({
                 </FormItem>
               )}
             />
-            {/* //CATEGORIES SELECT */}
             <FormField
               control={form.control}
               name="categoryIds"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Categories</FormLabel>
+                  <FormLabel>Categorías</FormLabel>
                   <Command
                     onKeyDown={handleKeyDown}
                     className="overflow-visible bg-transparent"
@@ -283,14 +303,14 @@ export const ProductForm: FC<ProductFormProps> = ({
                                 className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                                 onKeyDown={e => {
                                   if (e.key === 'Enter') {
-                                    handleUnselect(category)
+                                    handleUnselectCategory(category)
                                   }
                                 }}
                                 onMouseDown={e => {
                                   e.preventDefault()
                                   e.stopPropagation()
                                 }}
-                                onClick={() => handleUnselect(category)}
+                                onClick={() => handleUnselectCategory(category)}
                               >
                                 <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                               </button>
@@ -310,10 +330,10 @@ export const ProductForm: FC<ProductFormProps> = ({
                       </div>
                     </div>
                     <div className="relative mt-2">
-                      {openCommand && selectables.length > 0 ? (
+                      {openCommand && selectableCategories.length > 0 ? (
                         <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
                           <CommandGroup className="h-full overflow-auto">
-                            {selectables.map(category => {
+                            {selectableCategories.map(category => {
                               return (
                                 <CommandItem
                                   key={category.id}
@@ -327,13 +347,6 @@ export const ProductForm: FC<ProductFormProps> = ({
                                       ...prev,
                                       category
                                     ])
-                                    // // Extract category IDs from selectedCategories
-                                    // const categoryIds = selectedCategories.map(
-                                    //   cat => cat.id.toString()
-                                    // )
-
-                                    // // Update the form field with the categoryIds
-                                    // form.setValue('categoryIds', categoryIds)
                                   }}
                                   className={'cursor-pointer'}
                                 >
@@ -351,65 +364,153 @@ export const ProductForm: FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="sizeId"
+              name="sizeIds"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Size</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
+                  <FormLabel>Tallas</FormLabel>
+                  <Command
+                    onKeyDown={handleKeyDown}
+                    className="overflow-visible bg-transparent"
                   >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="Select a size"
+                    <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                      <div className="flex gap-1 flex-wrap">
+                        {selectedSizes.map(size => {
+                          return (
+                            <Badge key={size.id} variant="secondary">
+                              {size.value}
+                              <button
+                                className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                onKeyDown={e => {
+                                  if (e.key === 'Enter') {
+                                    handleUnselectSize(size)
+                                  }
+                                }}
+                                onMouseDown={e => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                }}
+                                onClick={() => handleUnselectSize(size)}
+                              >
+                                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                              </button>
+                            </Badge>
+                          )
+                        })}
+                        {/* Avoid having the "Search" Icon */}
+                        <CommandPrimitive.Input
+                          ref={inputRef}
+                          value={inputValue}
+                          onValueChange={setInputValue}
+                          onBlur={() => setOpenSizesCommand(false)}
+                          onFocus={() => setOpenSizesCommand(true)}
+                          placeholder="Escribe una talla..."
+                          className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
                         />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {sizes.map(size => (
-                        <SelectItem key={size.id} value={size.id.toString()}>
-                          {size.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
+                      </div>
+                    </div>
+                    <div className="relative mt-2">
+                      {openSizesCommand && selectableSizes.length > 0 ? (
+                        <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+                          <CommandGroup className="h-full overflow-auto">
+                            {selectableSizes.map(size => {
+                              return (
+                                <CommandItem
+                                  key={size.id}
+                                  onMouseDown={e => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                  }}
+                                  onSelect={value => {
+                                    setInputValue('')
+                                    setSelectedSizes(prev => [...prev, size])
+                                  }}
+                                  className={'cursor-pointer'}
+                                >
+                                  {size.name} ({size.value})
+                                </CommandItem>
+                              )
+                            })}
+                          </CommandGroup>
+                        </div>
+                      ) : null}
+                    </div>
+                  </Command>
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="colorId"
+              name="colorIds"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
+                  <FormLabel>Colores</FormLabel>
+                  <Command
+                    onKeyDown={handleKeyDown}
+                    className="overflow-visible bg-transparent"
                   >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="Select a color"
+                    <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                      <div className="flex gap-1 flex-wrap">
+                        {selectedColors.map(color => {
+                          return (
+                            <Badge key={color.id} variant="secondary">
+                              {color.value}
+                              <button
+                                className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                onKeyDown={e => {
+                                  if (e.key === 'Enter') {
+                                    handleUnselectColor(color)
+                                  }
+                                }}
+                                onMouseDown={e => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                }}
+                                onClick={() => handleUnselectColor(color)}
+                              >
+                                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                              </button>
+                            </Badge>
+                          )
+                        })}
+                        {/* Avoid having the "Search" Icon */}
+                        <CommandPrimitive.Input
+                          ref={inputRef}
+                          value={inputValue}
+                          onValueChange={setInputValue}
+                          onBlur={() => setOpenColorsCommand(false)}
+                          onFocus={() => setOpenColorsCommand(true)}
+                          placeholder="Escribe un color..."
+                          className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
                         />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {colors.map(color => (
-                        <SelectItem key={color.id} value={color.id.toString()}>
-                          {color.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
+                      </div>
+                    </div>
+                    <div className="relative mt-2">
+                      {openColorsCommand && selectableColors.length > 0 ? (
+                        <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+                          <CommandGroup className="h-full overflow-auto">
+                            {selectableColors.map(color => {
+                              return (
+                                <CommandItem
+                                  key={color.id}
+                                  onMouseDown={e => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                  }}
+                                  onSelect={value => {
+                                    setInputValue('')
+                                    setSelectedColors(prev => [...prev, color])
+                                  }}
+                                  className={'cursor-pointer'}
+                                >
+                                  {color.name} ({color.value})
+                                </CommandItem>
+                              )
+                            })}
+                          </CommandGroup>
+                        </div>
+                      ) : null}
+                    </div>
+                  </Command>
                 </FormItem>
               )}
             />
@@ -426,9 +527,9 @@ export const ProductForm: FC<ProductFormProps> = ({
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Featured</FormLabel>
+                    <FormLabel>Destacado</FormLabel>
                     <FormDescription>
-                      This product will appear on the home page
+                      Este producto aparecerá en la página principal
                     </FormDescription>
                   </div>
                 </FormItem>
@@ -447,9 +548,9 @@ export const ProductForm: FC<ProductFormProps> = ({
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Archived</FormLabel>
+                    <FormLabel>Archivado</FormLabel>
                     <FormDescription>
-                      This product will not appear anywhere in the store.
+                      Este producto no aparecerá a los clientes.
                     </FormDescription>
                   </div>
                 </FormItem>
