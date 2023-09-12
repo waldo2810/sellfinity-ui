@@ -39,17 +39,13 @@ import * as z from 'zod'
 
 const formSchema = z.object({
   name: z.string().min(1),
-  images: z.object({ url: z.string() }).array(),
+  images: z.object({ url: z.string() }).array().optional(),
   price: z.coerce.number().min(1),
   categoryIds: z.array(z.string()).refine(value => value.some(item => item), {
     message: 'You have to select at least one item.'
   }),
-  colorIds: z.array(z.string()).refine(value => value.some(item => item), {
-    message: 'You have to select at least one item.'
-  }),
-  sizeIds: z.array(z.string()).refine(value => value.some(item => item), {
-    message: 'You have to select at least one item.'
-  }),
+  colorIds: z.array(z.string()).optional(),
+  sizeIds: z.array(z.string()).optional(),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional()
 })
@@ -237,11 +233,14 @@ export const ProductForm: FC<ProductFormProps> = ({
                 <FormLabel>Imagenes</FormLabel>
                 <FormControl>
                   <ImageUpload
+                    // @ts-ignore
                     value={field.value.map(image => image.url)}
                     disabled={loading}
-                    onChange={url => field.onChange([...field.value, url])}
+                    // @ts-ignore
+                    onChange={url => field.onChange([...field.value, { url }])}
                     onRemove={url =>
                       field.onChange([
+                        // @ts-ignore
                         ...field.value.filter(current => current.url !== url)
                       ])
                     }
