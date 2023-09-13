@@ -42,7 +42,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     } catch (error: unknown) {
       if (error instanceof ApiError && error.statusCode === 409) {
         toast.error(
-          'Asegurate de que la talla no esté siendo usada por productos.'
+          'Asegurate de que el producto no esté siendo usada por productos.'
         )
         return
       }

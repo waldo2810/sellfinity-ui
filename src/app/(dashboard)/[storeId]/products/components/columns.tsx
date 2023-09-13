@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Image as Images } from '@/interfaces'
 import Image from 'next/image'
 import { CellAction } from './cell-action'
+import { CheckIcon, X } from 'lucide-react'
 
 export type ProductColumn = {
   images: Images[]
@@ -38,8 +39,16 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   { accessorKey: 'product.name', header: 'Name' },
   { accessorKey: 'product.price', header: 'Price' },
-  { accessorKey: 'product.isFeatured', header: 'Featured' },
-  { accessorKey: 'product.isArchived', header: 'Archived' },
+  {
+    accessorKey: 'product.isFeatured',
+    header: 'Featured',
+    cell: ({ row }) => (row.original.product.isFeatured ? <CheckIcon /> : <X />)
+  },
+  {
+    accessorKey: 'product.isArchived',
+    header: 'Archived',
+    cell: ({ row }) => (row.original.product.isArchived ? <CheckIcon /> : <X />)
+  },
   {
     id: 'actions',
     cell: ({ row }) => <CellAction data={row.original} />
