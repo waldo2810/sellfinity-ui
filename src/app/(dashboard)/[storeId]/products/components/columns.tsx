@@ -24,7 +24,7 @@ export type ProductColumn = {
 export const columns: ColumnDef<ProductColumn>[] = [
   {
     accessorKey: 'images.url',
-    header: 'Image',
+    header: 'Imagen',
     cell: ({ row }) => (
       <Image
         src={
@@ -39,11 +39,15 @@ export const columns: ColumnDef<ProductColumn>[] = [
       />
     )
   },
-  { id: 'productName', accessorKey: 'product.name', header: 'Name' },
-  { accessorKey: 'product.price', header: 'Price' },
+  { id: 'productName', accessorKey: 'product.name', header: 'Nombre' },
+  {
+    accessorKey: 'product.price',
+    header: 'Precio',
+    cell: ({ row }) => <span>$ {row.original.product.price}</span>
+  },
   {
     accessorKey: 'colors.value',
-    header: 'Colors',
+    header: 'Colores',
     cell: ({ row }) => (
       <div className="grid grid-cols-3">
         {row.original.colors.map(color => (
@@ -58,7 +62,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     accessorKey: 'product.isFeatured',
-    header: 'Featured',
+    header: 'Destacado',
     cell: ({ row }) =>
       row.original.product.isFeatured ? (
         <CheckIcon className="text-secondary-foreground/50" />
@@ -68,7 +72,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     accessorKey: 'product.isArchived',
-    header: 'Archived',
+    header: 'Archivado',
     cell: ({ row }) =>
       row.original.product.isArchived ? (
         <CheckIcon className="text-secondary-foreground/50" />

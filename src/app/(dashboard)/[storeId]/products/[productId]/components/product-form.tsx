@@ -108,10 +108,14 @@ export const ProductForm: FC<ProductFormProps> = ({
   const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const title = initialData ? 'Edit product' : 'Create product'
-  const description = initialData ? 'Edit a product.' : 'Add a new product'
-  const toastMessage = initialData ? 'Product updated.' : 'Product created.'
-  const action = initialData ? 'Save changes' : 'Create'
+  const title = initialData ? 'Editar producto' : 'Crear producto'
+  const description = initialData
+    ? 'Edita un producto de tu tienda'
+    : 'Add a new producto'
+  const toastMessage = initialData
+    ? 'Producto actualizado.'
+    : 'Producto creado.'
+  const action = initialData ? 'Guardar cambios' : 'Crear'
 
   const onSubmit = async (data: ProductFormValues) => {
     try {
@@ -143,8 +147,8 @@ export const ProductForm: FC<ProductFormProps> = ({
         `${appEndpoints.products}/${params.productId}?storeId=${params.storeId}`
       )
       router.refresh()
-      router.push(`/${params.storeId}/products`)
-      toast.success('Product deleted.')
+      router.push(`/${params.storeId}/products`) //TODO VERIFY
+      toast.success('Producto eliminado.')
     } catch (error: any) {
       toast.error('Something went wrong.')
     } finally {
