@@ -1,6 +1,7 @@
 'use client'
 
 import appEndpoints from '@/app/api/app.endpoints'
+import ColorBall from '@/components/color-ball'
 import { AlertModal } from '@/components/modals/alert-modal'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -456,7 +457,10 @@ export const ProductForm: FC<ProductFormProps> = ({
                         {selectedColors.map(color => {
                           return (
                             <Badge key={color.id} variant="secondary">
-                              {color.value}
+                              <ColorBall
+                                colorValue={color.value}
+                                showValue={true}
+                              />
                               <button
                                 className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                                 onKeyDown={e => {
@@ -505,7 +509,10 @@ export const ProductForm: FC<ProductFormProps> = ({
                                   }}
                                   className={'cursor-pointer'}
                                 >
-                                  {color.name} ({color.value})
+                                  <ColorBall
+                                    colorValue={color.value}
+                                    showValue={true}
+                                  />
                                 </CommandItem>
                               )
                             })}
