@@ -1,5 +1,5 @@
 import { CldUploadWidget } from 'next-cloudinary'
-import { ImagePlus, ImagePlusIcon, Trash } from 'lucide-react'
+import { ImagePlus, Trash } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from './button'
 import { useEffect, useState } from 'react'
