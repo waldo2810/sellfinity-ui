@@ -1,7 +1,17 @@
 import serverEndpoints from '@/app/api/server.endpoints'
+import axios from 'axios'
 
 export const getStockCount = async (storeId: string) => {
-  return await fetch(
-    serverEndpoints.products + '/stock-count?storeId=' + storeId,
-  ).then(res => res.json())
+  try {
+    const { data } = await axios.get(
+      `${serverEndpoints.products}/stock-count`,
+      {
+        params: { storeId },
+      },
+    )
+    return data
+  } catch (error) {
+    console.log(error)
+    return 0
+  }
 }
