@@ -1,5 +1,6 @@
 'use client'
 
+import { saveSize } from '@/actions/sizes/save-size'
 import appEndpoints from '@/app/api/app.endpoints'
 import { AlertModal } from '@/components/modals/alert-modal'
 import { Button } from '@/components/ui/button'
@@ -71,10 +72,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
           data
         )
       } else {
-        await axios.post(
-          `${appEndpoints.sizes}?storeId=${params.storeId}`,
-          data
-        )
+        await saveSize(params.storeId, data)
       }
       router.refresh()
       router.back()
