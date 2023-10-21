@@ -1,5 +1,4 @@
 import paymentsEndpoints from '@/app/api/payment.endpoints'
-import { PAYMENTS_URL } from '@/lib/contants'
 import axios from 'axios'
 
 export const getSalesCount = async (storeId: string) => {

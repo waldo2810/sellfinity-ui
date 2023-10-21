@@ -1,7 +1,7 @@
 import serverEndpoints from '@/app/api/server.endpoints'
 import { currentUser } from '@clerk/nextjs'
-import { NextResponse } from 'next/server'
 import axios from 'axios'
+import { NextResponse } from 'next/server'
 
 export const getStores = async () => {
   const user = await currentUser()
