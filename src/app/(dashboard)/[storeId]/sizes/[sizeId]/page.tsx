@@ -1,4 +1,4 @@
-import appEndpoints from '@/app/api/app.endpoints'
+import { getSize } from '@/actions/sizes/get-size'
 import { Size } from '@/interfaces'
 import { Metadata } from 'next'
 import { SizeForm } from './components/size-form'
@@ -16,11 +16,7 @@ export const metadata: Metadata = {
 }
 
 export default async function SizePage({ params }: SizePageProps) {
-  const sizeUrl = `${appEndpoints.sizes}/${params.sizeId}`
-
-  const size: Size = await fetch(sizeUrl, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => console.log(error))
+  const size: Size = await getSize(params.sizeId)
 
   return (
     <div className="flex-col">

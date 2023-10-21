@@ -13,6 +13,6 @@ export const saveSize = async (storeId: string | string[], body: any) => {
     return data
   } catch (error) {
     console.log(error)
-    return []
+    return {}
   }
 }
