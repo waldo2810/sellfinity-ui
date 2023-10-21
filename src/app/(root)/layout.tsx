@@ -23,8 +23,9 @@ export default function SetupLayout({
         process.env.NEXT_PUBLIC_BASE_URL +
         '/api/stores?userId=' +
         user?.primaryEmailAddress
+      const URLL = '/api/stores?userId='+user?.primaryEmailAddress
 
-      fetch(URL, { cache: 'no-store' })
+      fetch(URLL, { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
           setStores(data)
