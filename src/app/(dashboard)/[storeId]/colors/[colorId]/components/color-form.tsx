@@ -1,5 +1,6 @@
 'use client'
 
+import { saveColor } from '@/actions/colors/save-color'
 import appEndpoints from '@/app/api/app.endpoints'
 import { AlertModal } from '@/components/modals/alert-modal'
 import { Button } from '@/components/ui/button'
@@ -8,12 +9,12 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
 } from '@/components/ui/form'
 import { Heading } from '@/components/ui/heading'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { Color, Size } from '@/interfaces'
+import { Color } from '@/interfaces'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { Trash } from 'lucide-react'
@@ -25,7 +26,7 @@ import z from 'zod'
 
 const formSchema = z.object({
   name: z.string().min(1),
-  value: z.string().min(1)
+  value: z.string().min(1),
 })
 
 type ColorFormValues = z.infer<typeof formSchema>
@@ -65,13 +66,10 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
       if (initialData) {
         await axios.put(
           `${appEndpoints.colors}/${params.colorId}?storeId=${params.storeId}`,
-          data
+          data,
         )
       } else {
-        await axios.post(
-          `${appEndpoints.colors}?storeId=${params.storeId}`,
-          data
-        )
+        await saveColor(params.storeId, data)
       }
       router.refresh()
       router.back()
@@ -88,8 +86,8 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: '',
-      value: ''
-    }
+      value: '',
+    },
   })
 
   return (
@@ -100,18 +98,18 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
         onConfirm={onDelete}
         loading={isLoading}
       />
-      <div className="flex items-center justify-between gap-4">
+      <div className='flex items-center justify-between gap-4'>
         <Heading title={title} description={description} />
         {initialData && (
           <Button
             disabled={isLoading}
-            variant="destructive"
-            size="sm"
+            variant='destructive'
+            size='sm'
             onClick={() => setIsOpen(true)}
-            aria-label="Delete"
-            title="Delete"
+            aria-label='Delete'
+            title='Delete'
           >
-            <Trash className="h-4 w-4" />
+            <Trash className='h-4 w-4' />
             Eliminar talla
           </Button>
         )}
@@ -120,19 +118,19 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 w-full"
+          className='space-y-8 w-full'
         >
-          <div className="md:grid md:grid-cols-3 gap-8">
+          <div className='md:grid md:grid-cols-3 gap-8'>
             <FormField
               control={form.control}
-              name="name"
+              name='name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="Black"
+                      placeholder='Black'
                       {...field}
                     />
                   </FormControl>
@@ -141,12 +139,12 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
             />
             <FormField
               control={form.control}
-              name="value"
+              name='value'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoading} placeholder="#000" {...field} />
+                    <Input disabled={isLoading} placeholder='#000' {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -154,11 +152,11 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
           </div>
           <Button
             disabled={isLoading}
-            className="ml-auto"
-            type="submit"
-            size="smFlexMdFull"
-            aria-label="action"
-            title="action"
+            className='ml-auto'
+            type='submit'
+            size='smFlexMdFull'
+            aria-label='action'
+            title='action'
           >
             {action}
           </Button>

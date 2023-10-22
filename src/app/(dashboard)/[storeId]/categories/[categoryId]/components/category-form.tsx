@@ -1,5 +1,6 @@
 'use client'
 
+import { saveCategory } from '@/actions/categories/save-category'
 import appEndpoints from '@/app/api/app.endpoints'
 import { AlertModal } from '@/components/modals/alert-modal'
 import { Button } from '@/components/ui/button'
@@ -8,21 +9,12 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
 } from '@/components/ui/form'
 import { Heading } from '@/components/ui/heading'
-import { ImageUpload } from '@/components/ui/image-upload'
 import { Input } from '@/components/ui/input'
-import { Loader } from '@/components/ui/loader'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { Billboard, Category } from '@/interfaces'
+import { Category } from '@/interfaces'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { Trash } from 'lucide-react'
@@ -33,7 +25,7 @@ import { toast } from 'react-hot-toast'
 import z from 'zod'
 
 const formSchema = z.object({
-  name: z.string().min(1)
+  name: z.string().min(1),
 })
 
 type CategoryFormValues = z.infer<typeof formSchema>
@@ -61,7 +53,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
       toast.success('Billboard deleted.')
     } catch (error: any) {
       toast.error(
-        'Make sure you removed all products using this category first.'
+        'Make sure you removed all products using this category first.',
       )
     } finally {
       setIsLoading(false)
@@ -75,17 +67,13 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
       if (initialData) {
         await axios.put(
           `${appEndpoints.categories}/${params.categoryId}?storeId=${params.storeId}`,
-          data
+          data,
         )
       } else {
-        await axios.post(
-          `${appEndpoints.categories}?storeId=${params.storeId}`,
-          data
-        )
+        await saveCategory(params.storeId, data)
       }
       router.refresh()
       router.back()
-      //window.location.assign(`${params.storeId}/categories`)
       toast.success(toastMessage)
     } catch (error: any) {
       console.log('[CLIENT] error posting ---->', error)
@@ -98,8 +86,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      name: ''
-    }
+      name: '',
+    },
   })
 
   return (
@@ -110,18 +98,18 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
         onConfirm={onDelete}
         loading={isLoading}
       />
-      <div className="flex items-center justify-between gap-4">
+      <div className='flex items-center justify-between gap-4'>
         <Heading title={title} description={description} />
         {initialData && (
           <Button
             disabled={isLoading}
-            variant="destructive"
-            size="sm"
+            variant='destructive'
+            size='sm'
             onClick={() => setIsOpen(true)}
-            aria-label="Delete"
-            title="Delete"
+            aria-label='Delete'
+            title='Delete'
           >
-            <Trash className="h-4 w-4" />
+            <Trash className='h-4 w-4' />
             Eliminar categoría
           </Button>
         )}
@@ -130,19 +118,19 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 w-full"
+          className='space-y-8 w-full'
         >
-          <div className="md:grid md:grid-cols-3 gap-8">
+          <div className='md:grid md:grid-cols-3 gap-8'>
             <FormField
               control={form.control}
-              name="name"
+              name='name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="Articulos para el hogar"
+                      placeholder='Articulos para el hogar'
                       {...field}
                     />
                   </FormControl>
@@ -152,11 +140,11 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
           </div>
           <Button
             disabled={isLoading}
-            className="ml-auto"
-            type="submit"
-            size="smFlexMdFull"
-            aria-label="action"
-            title="action"
+            className='ml-auto'
+            type='submit'
+            size='smFlexMdFull'
+            aria-label='action'
+            title='action'
           >
             {action}
           </Button>

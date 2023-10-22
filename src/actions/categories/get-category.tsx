@@ -1,11 +1,11 @@
 import serverEndpoints from '@/app/api/server.endpoints'
 import axios from 'axios'
 
-export const getSize = async (sizeId: any) => {
+export const getCategory = async (categoryId: any) => {
   try {
-    if (!sizeId || sizeId === 'new') return null
+    if (!categoryId || categoryId === 'new') return null
     const { data } = await axios.get(
-      `${serverEndpoints.sizes}/search/${sizeId}`,
+      `${serverEndpoints.categories}/search/${categoryId}`,
     )
     return data
   } catch (error: unknown) {

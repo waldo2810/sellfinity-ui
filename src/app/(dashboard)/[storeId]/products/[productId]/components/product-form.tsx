@@ -1,5 +1,6 @@
 'use client'
 
+import { saveProduct } from '@/actions/products/save-product'
 import appEndpoints from '@/app/api/app.endpoints'
 import ColorBall from '@/components/color-ball'
 import { AlertModal } from '@/components/modals/alert-modal'
@@ -14,7 +15,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from '@/components/ui/form'
 import { Heading } from '@/components/ui/heading'
 import { ImageUpload } from '@/components/ui/image-upload'
@@ -36,12 +37,12 @@ const formSchema = z.object({
   images: z.object({ url: z.string() }).array().optional(),
   price: z.coerce.number().min(1),
   categoryIds: z.array(z.string()).refine(value => value.some(item => item), {
-    message: 'You have to select at least one item.'
+    message: 'You have to select at least one item.',
   }),
   colorIds: z.array(z.string()).optional(),
   sizeIds: z.array(z.string()).optional(),
   isFeatured: z.boolean().default(false).optional(),
-  isArchived: z.boolean().default(false).optional()
+  isArchived: z.boolean().default(false).optional(),
 })
 type ProductFormValues = z.infer<typeof formSchema>
 
@@ -56,7 +57,7 @@ export const ProductForm: FC<ProductFormProps> = ({
   initialData,
   categories,
   sizes,
-  colors
+  colors,
 }) => {
   console.log(initialData)
 
@@ -67,7 +68,7 @@ export const ProductForm: FC<ProductFormProps> = ({
         colorIds: initialData.colors,
         sizeIds: initialData.sizes,
         images: initialData.images,
-        price: parseFloat(String(initialData?.product.price))
+        price: parseFloat(String(initialData?.product.price)),
       }
     : {
         name: '',
@@ -77,13 +78,13 @@ export const ProductForm: FC<ProductFormProps> = ({
         colorIds: [],
         sizeIds: [],
         isFeatured: false,
-        isArchived: false
+        isArchived: false,
       }
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
     // @ts-ignore
-    defaultValues
+    defaultValues,
   })
 
   const params = useParams()
@@ -95,15 +96,15 @@ export const ProductForm: FC<ProductFormProps> = ({
   const [openColorsCommand, setOpenColorsCommand] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [selectedCategories, setSelectedCategories] = useState<Category[]>(
-    initialData ? defaultValues.categoryIds : []
+    initialData ? defaultValues.categoryIds : [],
   )
   // const [selectedCategories, setSelectedCategories] = useState<any[]>([])
   // const [selectedSizes, setSelectedSizes] = useState<Size[]>([])
   const [selectedSizes, setSelectedSizes] = useState<Size[]>(
-    initialData ? defaultValues.sizeIds : []
+    initialData ? defaultValues.sizeIds : [],
   )
   const [selectedColors, setSelectedColors] = useState<Color[]>(
-    initialData ? defaultValues.colorIds : []
+    initialData ? defaultValues.colorIds : [],
   )
   const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -123,13 +124,10 @@ export const ProductForm: FC<ProductFormProps> = ({
       if (initialData) {
         await axios.put(
           `${appEndpoints.products}/${params.productId}?storeId=${params.storeId}`,
-          data
+          data,
         )
       } else {
-        await axios.post(
-          `${appEndpoints.products}?storeId=${params.storeId}`,
-          data
-        )
+        await saveProduct(params.storeId, data)
       }
       router.refresh()
       router.push(`/${params.storeId}/products`)
@@ -144,7 +142,7 @@ export const ProductForm: FC<ProductFormProps> = ({
     try {
       setLoading(true)
       await axios.delete(
-        `${appEndpoints.products}/${params.productId}?storeId=${params.storeId}`
+        `${appEndpoints.products}/${params.productId}?storeId=${params.storeId}`,
       )
       router.refresh()
       router.push(`/${params.storeId}/products`) //TODO VERIFY
@@ -184,17 +182,17 @@ export const ProductForm: FC<ProductFormProps> = ({
         }
       }
     },
-    []
+    [],
   )
 
   const selectableCategories = categories.filter(
-    (category: Category) => !selectedCategories.includes(category)
+    (category: Category) => !selectedCategories.includes(category),
   )
   const selectableSizes = sizes.filter(
-    (size: Size) => !selectedSizes.includes(size)
+    (size: Size) => !selectedSizes.includes(size),
   )
   const selectableColors = colors.filter(
-    (color: Color) => !selectedColors.includes(color)
+    (color: Color) => !selectedColors.includes(color),
   )
 
   useEffect(() => {
@@ -215,16 +213,16 @@ export const ProductForm: FC<ProductFormProps> = ({
         onConfirm={onDelete}
         loading={loading}
       />
-      <div className="flex items-center justify-between">
+      <div className='flex items-center justify-between'>
         <Heading title={title} description={description} />
         {initialData && (
           <Button
             disabled={loading}
-            variant="destructive"
-            size="sm"
+            variant='destructive'
+            size='sm'
             onClick={() => setOpen(true)}
           >
-            <Trash className="h-4 w-4" />
+            <Trash className='h-4 w-4' />
           </Button>
         )}
       </div>
@@ -232,11 +230,11 @@ export const ProductForm: FC<ProductFormProps> = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 w-full"
+          className='space-y-8 w-full'
         >
           <FormField
             control={form.control}
-            name="images"
+            name='images'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Imagenes</FormLabel>
@@ -250,7 +248,7 @@ export const ProductForm: FC<ProductFormProps> = ({
                     onRemove={url =>
                       field.onChange([
                         // @ts-ignore
-                        ...field.value.filter(current => current.url !== url)
+                        ...field.value.filter(current => current.url !== url),
                       ])
                     }
                   />
@@ -259,15 +257,15 @@ export const ProductForm: FC<ProductFormProps> = ({
               </FormItem>
             )}
           />
-          <div className="md:grid md:grid-cols-3 gap-8">
+          <div className='md:grid md:grid-cols-3 gap-8'>
             <FormField
               control={form.control}
-              name="name"
+              name='name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Blusa" {...field} />
+                    <Input disabled={loading} placeholder='Blusa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -275,15 +273,15 @@ export const ProductForm: FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="price"
+              name='price'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Precio</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
+                      type='number'
                       disabled={loading}
-                      placeholder="9.99"
+                      placeholder='9.99'
                       {...field}
                     />
                   </FormControl>
@@ -293,22 +291,22 @@ export const ProductForm: FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="categoryIds"
+              name='categoryIds'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categorías</FormLabel>
                   <Command
                     onKeyDown={handleKeyDown}
-                    className="overflow-visible bg-transparent"
+                    className='overflow-visible bg-transparent'
                   >
-                    <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-                      <div className="flex gap-1 flex-wrap">
+                    <div className='group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2'>
+                      <div className='flex gap-1 flex-wrap'>
                         {selectedCategories.map(category => {
                           return (
-                            <Badge key={category.id} variant="secondary">
+                            <Badge key={category.id} variant='secondary'>
                               {category.name}
                               <button
-                                className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                className='ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
                                 onKeyDown={e => {
                                   if (e.key === 'Enter') {
                                     handleUnselectCategory(category)
@@ -320,7 +318,7 @@ export const ProductForm: FC<ProductFormProps> = ({
                                 }}
                                 onClick={() => handleUnselectCategory(category)}
                               >
-                                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                                <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
                               </button>
                             </Badge>
                           )
@@ -332,15 +330,15 @@ export const ProductForm: FC<ProductFormProps> = ({
                           onValueChange={setInputValue}
                           onBlur={() => setOpenCommand(false)}
                           onFocus={() => setOpenCommand(true)}
-                          placeholder="Escribe una categoría..."
-                          className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
+                          placeholder='Escribe una categoría...'
+                          className='ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1'
                         />
                       </div>
                     </div>
-                    <div className="relative mt-2">
+                    <div className='relative mt-2'>
                       {openCommand && selectableCategories.length > 0 ? (
-                        <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-                          <CommandGroup className="h-full overflow-auto">
+                        <div className='absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
+                          <CommandGroup className='h-full overflow-auto'>
                             {selectableCategories.map(category => {
                               return (
                                 <CommandItem
@@ -353,7 +351,7 @@ export const ProductForm: FC<ProductFormProps> = ({
                                     setInputValue('')
                                     setSelectedCategories(prev => [
                                       ...prev,
-                                      category
+                                      category,
                                     ])
                                   }}
                                   className={'cursor-pointer'}
@@ -372,22 +370,22 @@ export const ProductForm: FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="sizeIds"
+              name='sizeIds'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tallas</FormLabel>
                   <Command
                     onKeyDown={handleKeyDown}
-                    className="overflow-visible bg-transparent"
+                    className='overflow-visible bg-transparent'
                   >
-                    <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-                      <div className="flex gap-1 flex-wrap">
+                    <div className='group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2'>
+                      <div className='flex gap-1 flex-wrap'>
                         {selectedSizes.map(size => {
                           return (
-                            <Badge key={size.id} variant="secondary">
+                            <Badge key={size.id} variant='secondary'>
                               {size.value}
                               <button
-                                className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                className='ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
                                 onKeyDown={e => {
                                   if (e.key === 'Enter') {
                                     handleUnselectSize(size)
@@ -399,7 +397,7 @@ export const ProductForm: FC<ProductFormProps> = ({
                                 }}
                                 onClick={() => handleUnselectSize(size)}
                               >
-                                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                                <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
                               </button>
                             </Badge>
                           )
@@ -411,15 +409,15 @@ export const ProductForm: FC<ProductFormProps> = ({
                           onValueChange={setInputValue}
                           onBlur={() => setOpenSizesCommand(false)}
                           onFocus={() => setOpenSizesCommand(true)}
-                          placeholder="Escribe una talla..."
-                          className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
+                          placeholder='Escribe una talla...'
+                          className='ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1'
                         />
                       </div>
                     </div>
-                    <div className="relative mt-2">
+                    <div className='relative mt-2'>
                       {openSizesCommand && selectableSizes.length > 0 ? (
-                        <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-                          <CommandGroup className="h-full overflow-auto">
+                        <div className='absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
+                          <CommandGroup className='h-full overflow-auto'>
                             {selectableSizes.map(size => {
                               return (
                                 <CommandItem
@@ -448,25 +446,25 @@ export const ProductForm: FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="colorIds"
+              name='colorIds'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Colores</FormLabel>
                   <Command
                     onKeyDown={handleKeyDown}
-                    className="overflow-visible bg-transparent"
+                    className='overflow-visible bg-transparent'
                   >
-                    <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-                      <div className="flex gap-1 flex-wrap">
+                    <div className='group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2'>
+                      <div className='flex gap-1 flex-wrap'>
                         {selectedColors.map(color => {
                           return (
-                            <Badge key={color.id} variant="secondary">
+                            <Badge key={color.id} variant='secondary'>
                               <ColorBall
                                 colorValue={color.value}
                                 showValue={true}
                               />
                               <button
-                                className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                className='ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
                                 onKeyDown={e => {
                                   if (e.key === 'Enter') {
                                     handleUnselectColor(color)
@@ -478,7 +476,7 @@ export const ProductForm: FC<ProductFormProps> = ({
                                 }}
                                 onClick={() => handleUnselectColor(color)}
                               >
-                                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                                <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
                               </button>
                             </Badge>
                           )
@@ -490,15 +488,15 @@ export const ProductForm: FC<ProductFormProps> = ({
                           onValueChange={setInputValue}
                           onBlur={() => setOpenColorsCommand(false)}
                           onFocus={() => setOpenColorsCommand(true)}
-                          placeholder="Escribe un color..."
-                          className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
+                          placeholder='Escribe un color...'
+                          className='ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1'
                         />
                       </div>
                     </div>
-                    <div className="relative mt-2">
+                    <div className='relative mt-2'>
                       {openColorsCommand && selectableColors.length > 0 ? (
-                        <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-                          <CommandGroup className="h-full overflow-auto">
+                        <div className='absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
+                          <CommandGroup className='h-full overflow-auto'>
                             {selectableColors.map(color => {
                               return (
                                 <CommandItem
@@ -530,9 +528,9 @@ export const ProductForm: FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="isFeatured"
+              name='isFeatured'
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -540,7 +538,7 @@ export const ProductForm: FC<ProductFormProps> = ({
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <div className="space-y-1 leading-none">
+                  <div className='space-y-1 leading-none'>
                     <FormLabel>Destacado</FormLabel>
                     <FormDescription>
                       Este producto aparecerá en la página principal
@@ -551,9 +549,9 @@ export const ProductForm: FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="isArchived"
+              name='isArchived'
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -561,7 +559,7 @@ export const ProductForm: FC<ProductFormProps> = ({
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <div className="space-y-1 leading-none">
+                  <div className='space-y-1 leading-none'>
                     <FormLabel>Archivado</FormLabel>
                     <FormDescription>
                       Este producto no aparecerá a los clientes.
@@ -571,7 +569,7 @@ export const ProductForm: FC<ProductFormProps> = ({
               )}
             />
           </div>
-          <Button disabled={loading} className="ml-auto" type="submit">
+          <Button disabled={loading} className='ml-auto' type='submit'>
             {action}
           </Button>
         </form>

@@ -1,5 +1,8 @@
-import appEndpoints from '@/app/api/app.endpoints'
-import { Category, Color, Product, ProductData, Size } from '@/interfaces'
+import { getCategories } from '@/actions/categories/get-categories'
+import { getColors } from '@/actions/colors/get-colors'
+import { getProduct } from '@/actions/products/get-product'
+import { getSizes } from '@/actions/sizes/get-sizes'
+import { Category, Color, ProductData, Size } from '@/interfaces'
 import { Metadata } from 'next'
 import { ProductForm } from './components/product-form'
 
@@ -16,26 +19,10 @@ export const metadata: Metadata = {
 }
 
 export default async function ProductPage({ params }: BillboardPageProps) {
-  const productUrl = `${appEndpoints.products}/${params.productId}`
-  const categoryUrl = `${appEndpoints.categories}?storeId=${params.storeId}`
-  const colorUrl = `${appEndpoints.colors}?storeId=${params.storeId}`
-  const sizeUrl = `${appEndpoints.sizes}?storeId=${params.storeId}`
-
-  const product: ProductData = await fetch(productUrl, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-
-  const categories: Category[] = await fetch(categoryUrl, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-
-  const colors: Color[] = await fetch(colorUrl, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-
-  const sizes: Size[] = await fetch(sizeUrl, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => console.log(error))
+  const product: ProductData = await getProduct(params.productId)
+  const categories: Category[] = await getCategories(params.storeId)
+  const colors: Color[] = await getColors(params.storeId)
+  const sizes: Size[] = await getSizes(params.storeId)
 
   return (
     <div className="flex-col">

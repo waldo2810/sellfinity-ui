@@ -1,12 +1,11 @@
 import serverEndpoints from '@/app/api/server.endpoints'
 import axios from 'axios'
 
-export const getSize = async (sizeId: any) => {
+export const getBillboard = async (billboardId: any) => {
   try {
-    if (!sizeId || sizeId === 'new') return null
+    if (!billboardId || billboardId === 'new') return null
     const { data } = await axios.get(
-      `${serverEndpoints.sizes}/search/${sizeId}`,
-    )
+      `${serverEndpoints.billboards}/${billboardId}`)
     return data
   } catch (error: unknown) {
     console.log(error)

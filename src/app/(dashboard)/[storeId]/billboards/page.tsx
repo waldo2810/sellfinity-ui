@@ -1,9 +1,7 @@
 import { Metadata } from 'next'
 import { BillboardClient } from './components/client'
 import { BillboardColumn } from './components/columns'
-import { Billboard } from '@/interfaces'
-import appEndpoints from '@/app/api/app.endpoints'
-import toast from 'react-hot-toast'
+import { getBillboards } from '@/actions/billboards/get-billboards'
 
 export async function generateMetadata({}: {
   params: { locale: string }
@@ -19,13 +17,7 @@ export default async function BillboardsPage({
 }: {
   params: { storeId: number }
 }) {
-  const URL = `${appEndpoints.billboards}?storeId=${params.storeId}`
-  const billboards: BillboardColumn[] = await fetch(URL, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => {
-      toast.error('Error fetching billboards, please check logs')
-      console.log('---> BillboardsPage line25', error)
-    })
+  const billboards: BillboardColumn[] = await getBillboards(params.storeId)
 
   return (
     <div className="flex-col">

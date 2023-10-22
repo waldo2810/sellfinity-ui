@@ -1,31 +1,28 @@
 import { Metadata } from 'next'
 import { CategoryClient } from './components/client'
 import { CategoryColumn } from './components/columns'
-import appEndpoints from '@/app/api/app.endpoints'
+import { getCategories } from '@/actions/categories/get-categories'
 
 export async function generateMetadata({}: {
   params: { locale: string }
 }): Promise<Metadata> {
   return {
     title: 'Categorias',
-    description: 'Administra diversas categorias de productos'
+    description: 'Administra diversas categorias de productos',
   }
 }
 
 export default async function CategoriesPage({
-  params
+  params,
 }: {
   params: { storeId: number }
 }) {
-  const URL = `${appEndpoints.categories}/?storeId=${params.storeId}`
-  const billboards: CategoryColumn[] = await fetch(URL, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => console.log('ERROR FROM SERVER ->', error))
+  const categories: CategoryColumn[] = await getCategories(params.storeId)
 
   return (
-    <div className="flex-col">
-      <div className="flex-1 space-y-4 px-5 pt-6">
-        <CategoryClient data={billboards} />
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 px-5 pt-6'>
+        <CategoryClient data={categories} />
       </div>
     </div>
   )

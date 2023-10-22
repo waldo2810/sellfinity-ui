@@ -1,4 +1,4 @@
-import appEndpoints from '@/app/api/app.endpoints'
+import { getProducts } from '@/actions/products/get-products'
 import { Metadata } from 'next'
 import { ProductClient } from './components/client'
 import { ProductColumn } from './components/columns'
@@ -13,10 +13,7 @@ export default async function ProductsPage({
 }: {
   params: { storeId: number }
 }) {
-  const URL = `${appEndpoints.products}?storeId=${params.storeId}`
-  const products: ProductColumn[] = await fetch(URL, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => console.log('ERROR FROM SERVER ->', error))
+  const products: ProductColumn[] = await getProducts(params.storeId)
 
   return (
     <div className="flex-col">

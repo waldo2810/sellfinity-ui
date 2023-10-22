@@ -1,11 +1,11 @@
 import serverEndpoints from '@/app/api/server.endpoints'
 import axios from 'axios'
 
-export const getSize = async (sizeId: any) => {
+export const getColor = async (colorId: any) => {
   try {
-    if (!sizeId || sizeId === 'new') return null
+    if (!colorId || colorId === 'new') return null
     const { data } = await axios.get(
-      `${serverEndpoints.sizes}/search/${sizeId}`,
+      `${serverEndpoints.colors}/search/${colorId}`,
     )
     return data
   } catch (error: unknown) {

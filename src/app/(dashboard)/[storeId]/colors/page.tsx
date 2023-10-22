@@ -1,4 +1,4 @@
-import appEndpoints from '@/app/api/app.endpoints'
+import { getColors } from '@/actions/colors/get-colors'
 import { Metadata } from 'next'
 import { ColorClient } from './components/client'
 import { ColorColumn } from './components/columns'
@@ -13,10 +13,7 @@ export default async function ColorsPage({
 }: {
   params: { storeId: number }
 }) {
-  const URL = `${appEndpoints.colors}/?storeId=${params.storeId}`
-  const colors: ColorColumn[] = await fetch(URL, { cache: 'no-store' })
-    .then(res => res.json())
-    .catch(error => console.log('ERROR FROM SERVER ->', error))
+  const colors: ColorColumn[] = await getColors(params.storeId)
 
   return (
     <div className="flex-col">

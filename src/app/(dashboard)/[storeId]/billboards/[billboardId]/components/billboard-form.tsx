@@ -1,5 +1,6 @@
 'use client'
 
+import { saveBillboard } from '@/actions/billboards/save-billboard'
 import appEndpoints from '@/app/api/app.endpoints'
 import { AlertModal } from '@/components/modals/alert-modal'
 import { Button } from '@/components/ui/button'
@@ -49,6 +50,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   initialData,
   categories
 }) => {
+  console.log(initialData)
   const params = useParams()
   const router = useRouter()
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -84,14 +86,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
           data
         )
       } else {
-        await axios.post(
-          `${appEndpoints.billboards}?storeId=${params.storeId}`,
-          data
-        )
+        await saveBillboard(params.storeId,data)
       }
       router.refresh()
       router.back()
-      //window.location.assign(`${params.storeId}/billboards`)
       toast.success(toastMessage)
     } catch (error: any) {
       console.log('[CLIENT] error posting ---->', error)
