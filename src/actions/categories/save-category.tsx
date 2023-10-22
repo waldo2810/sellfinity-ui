@@ -5,7 +5,7 @@ export const saveCategory = async (storeId: string | string[], body: any) => {
   try {
     if (!storeId) throw new Error()
     const { name } = body
-    const { data } = await axios.post(`${serverEndpoints.colors}`, {
+    const { data } = await axios.post(`${serverEndpoints.categories}`, {
       name,
       storeId,
     })
