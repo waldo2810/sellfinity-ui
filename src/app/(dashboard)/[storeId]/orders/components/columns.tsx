@@ -1,38 +1,64 @@
 'use client'
 
+import { OrderItem } from '@/interfaces'
+import { formatter } from '@/lib/utils'
 import { ColumnDef } from '@tanstack/react-table'
-import Image from 'next/image'
-import { CellAction } from './cell-action'
+import { CheckIcon, X } from 'lucide-react'
 
-export type BillboardColumn = {
+export type OrderColumn = {
   id: number
-  label: string
-  category: string
-  imageUrl: string
+  storeId: number
+  isPaid: boolean
+  phone: string
+  address: string
+  createdAt: string
+  updatedAt: string
+  orderItems: OrderItem[]
 }
 
-export const columns: ColumnDef<BillboardColumn>[] = [
+export const columns: ColumnDef<OrderColumn>[] = [
   {
-    accessorKey: 'imageUrl',
-    header: 'Image',
+    accessorKey: 'products',
+    header: 'Productos',
     cell: ({ row }) => (
-      <Image
-        src={
-          row.original.imageUrl !== ''
-            ? row.original.imageUrl
-            : 'https://i.pinimg.com/originals/a3/6b/42/a36b422bb2bebcbd77bba846b83ddf5d.png'
-        }
-        width="80"
-        height="80"
-        alt="Player"
-        className="rounded-lg"
-      />
-    )
+      <span>
+        {row.original.orderItems.map((orderItem, index) => {
+          const separator =
+            index < row.original.orderItems.length - 1 ? ', ' : ''
+          return orderItem.product.name + separator
+        })}
+      </span>
+    ),
   },
-  { accessorKey: 'label', header: 'Label' },
-  { accessorKey: 'category.name', header: 'Category' },
   {
-    id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />
-  }
+    accessorKey: 'phone',
+    header: 'Telefono',
+  },
+  {
+    accessorKey: 'address',
+    header: 'Dirección',
+  },
+  {
+    accessorKey: 'totalPrice',
+    header: 'Precio total',
+    cell: ({ row }) => (
+      <span>
+        {formatter.format(
+          row.original.orderItems.reduce((orderSum, item) => {
+            return orderSum + item.product.price
+          }, 0),
+        )}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'isPaid',
+    header: 'Pagado',
+    cell: ({ row }) =>
+      row.original.isPaid ? (
+        <CheckIcon className='text-green-500' />
+      ) : (
+        <X className='text-red-600' />
+      ),
+  },
 ]

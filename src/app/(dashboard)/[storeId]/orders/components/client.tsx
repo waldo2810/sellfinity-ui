@@ -3,10 +3,10 @@
 import { DataTable } from '@/components/ui/data-table'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
-import { BillboardColumn, columns } from './columns'
+import { OrderColumn, columns } from './columns'
 
 interface OrdersClientProps {
-  data: BillboardColumn[]
+  data: OrderColumn[]
 }
 
 export const OrdersClient: React.FC<OrdersClientProps> = ({ data }) => {
@@ -14,10 +14,10 @@ export const OrdersClient: React.FC<OrdersClientProps> = ({ data }) => {
     <>
       <Heading
         title={'Ordenes'.concat(` (${data.length})`)}
-        description="Administra tus ordenes"
+        description='Administra tus ordenes'
       />
       <Separator />
-      <DataTable searchKey="label" columns={columns} data={data} />
+      <DataTable searchKey='address' columns={columns} data={data} />
     </>
   )
 }

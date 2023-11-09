@@ -20,9 +20,15 @@ export interface Product {
   size: string
   color: string
   images: Image[]
-  // orderItems: OrderItem[]
   createdAt: string
   updatedAt: string
+}
+
+export interface OrderItem {
+  id: number,
+  orderId: number,
+  productId: number,
+  product: Product
 }
 
 export interface ProductData {
