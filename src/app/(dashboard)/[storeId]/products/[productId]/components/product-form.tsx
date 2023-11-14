@@ -35,7 +35,7 @@ import * as z from 'zod'
 const formSchema = z.object({
   name: z.string().min(1),
   images: z.object({ url: z.string() }).array().optional(),
-  price: z.coerce.number().min(1),
+  price: z.coerce.number().min(0),
   categoryIds: z.array(z.string()).refine(value => value.some(item => item), {
     message: 'You have to select at least one item.',
   }),
@@ -63,23 +63,23 @@ export const ProductForm: FC<ProductFormProps> = ({
 
   const defaultValues = initialData
     ? {
-        ...initialData.product,
-        categoryIds: initialData.categories,
-        colorIds: initialData.colors,
-        sizeIds: initialData.sizes,
-        images: initialData.images,
-        price: parseFloat(String(initialData?.product.price)),
-      }
+      ...initialData.product,
+      categoryIds: initialData.categories,
+      colorIds: initialData.colors,
+      sizeIds: initialData.sizes,
+      images: initialData.images,
+      price: parseFloat(String(initialData?.product.price)),
+    }
     : {
-        name: '',
-        images: [],
-        price: 0,
-        categoryIds: [],
-        colorIds: [],
-        sizeIds: [],
-        isFeatured: false,
-        isArchived: false,
-      }
+      name: '',
+      images: [],
+      price: 0,
+      categoryIds: [],
+      colorIds: [],
+      sizeIds: [],
+      isFeatured: false,
+      isArchived: false,
+    }
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
